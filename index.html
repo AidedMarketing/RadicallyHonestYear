@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2C3E50">
+    <title>Radical Honesty 2026</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --color-bg: #FAF9F7;
+            --color-bg-warm: #F5F1EB;
+            --color-text: #2C3E50;
+            --color-text-muted: #6B7280;
+            --color-accent: #D4A373;
+            --color-accent-light: #E9D5C3;
+            --color-success: #7C9885;
+            --color-warning: #D4A373;
+            --color-survival: #C97064;
+            --color-functional: #D4A373;
+            --color-capable: #7C9885;
+            --color-expansive: #5B8A72;
+            --color-border: #E5E1DB;
+            --color-card: #FFFFFF;
+            --font-serif: 'Crimson Pro', Georgia, serif;
+            --font-sans: 'DM Sans', -apple-system, sans-serif;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
+            --shadow-lg: 0 8px 32px rgba(44, 62, 80, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            min-height: 100dvh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* App Container */
+        .app {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            padding: 16px 20px;
+            background: var(--color-bg);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        .logo span {
+            color: var(--color-accent);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--color-accent-light);
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard */
+        .greeting {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .date-display {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .core-question {
+            background: linear-gradient(135deg, var(--color-text) 0%, #4A5568 100%);
+            color: white;
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .core-question::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-family: var(--font-serif);
+            font-size: 120px;
+            opacity: 0.1;
+            line-height: 1;
+        }
+
+        .core-question p {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Current Status Card */
+        .status-card {
+            background: var(--color-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .status-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted);
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-badge.q1 { background: var(--color-accent-light); color: var(--color-text); }
+
+        .quarter-info h3 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .quarter-theme {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            margin-top: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--color-bg-warm);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-success) 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Action Cards */
+        .action-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .action-card.primary {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        .action-card-icon {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+
+        .action-card-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Recent Check-ins */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .see-all {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .checkin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkin-item {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 16px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .checkin-item:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .checkin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .checkin-week {
+            font-weight: 600;
+        }
+
+        .energy-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .energy-badge.survival { background: #FECACA; color: #991B1B; }
+        .energy-badge.functional { background: #FDE68A; color: #92400E; }
+        .energy-badge.capable { background: #BBF7D0; color: #166534; }
+        .energy-badge.expansive { background: #A7F3D0; color: #065F46; }
+
+        .checkin-win {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--color-text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            margin-bottom: 16px;
+        }
+
+        /* Check-in Form */
+        .form-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .form-title {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            color: var(--color-text-muted);
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-helper {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 16px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        /* Energy Selector */
+        .energy-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .energy-option {
+            padding: 16px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .energy-option:hover {
+            border-color: var(--color-accent);
+        }
+
+        .energy-option.selected {
+            border-color: var(--color-accent);
+            background: var(--color-accent-light);
+        }
+
+        .energy-option-label {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .energy-option-desc {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .energy-option.survival .energy-option-label { color: var(--color-survival); }
+        .energy-option.functional .energy-option-label { color: var(--color-functional); }
+        .energy-option.capable .energy-option-label { color: var(--color-capable); }
+        .energy-option.expansive .energy-option-label { color: var(--color-expansive); }
+
+        /* Commitments */
+        .commitment-input {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .commitment-input input {
+            flex: 1;
+        }
+
+        .add-btn {
+            padding: 0 20px;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .commitment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .commitment-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: var(--color-bg-warm);
+            border-radius: var(--radius);
+        }
+
+        .commitment-text {
+            flex: 1;
+        }
+
+        .commitment-status {
+            display: flex;
+            gap: 4px;
+        }
+
+        .status-btn {
+            padding: 4px 8px;
+            border: 1px solid var(--color-border);
+            background: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .status-btn.active {
+            background: var(--color-accent);
+            color: white;
+            border-color: var(--color-accent);
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        /* Low Energy Toggle */
+        .low-energy-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--color-bg-warm);
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+
+        .toggle-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toggle-label span:first-child {
+            font-weight: 500;
+        }
+
+        .toggle-label span:last-child {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background: var(--color-border);
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active {
+            background: var(--color-accent);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(22px);
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--color-text);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #1a252f;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--color-card);
+            border-top: 1px solid var(--color-border);
+            padding: 8px 0;
+            padding-bottom: max(8px, env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        .nav-items {
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 16px;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            font-family: var(--font-sans);
+        }
+
+        .nav-item.active {
+            color: var(--color-accent);
+        }
+
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 4px;
+        }
+
+        .nav-item span {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Depth Cycles Screen */
+        .cycles-intro {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .cycle-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cycle-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cycle-number {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .cycle-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .cycle-question {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+
+        .cycle-status {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 10px;
+            background: var(--color-bg-warm);
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .cycle-status.in-progress {
+            background: var(--color-accent-light);
+            color: var(--color-text);
+        }
+
+        /* Cycle Detail */
+        .cycle-detail-header {
+            margin-bottom: 24px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-bottom: 16px;
+            background: none;
+            border: none;
+            font-family: var(--font-sans);
+        }
+
+        .cycle-detail-title {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .cycle-detail-quote {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--color-text-muted);
+            padding-left: 16px;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        .framing-section {
+            background: var(--color-bg-warm);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+        }
+
+        .framing-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .prompt-card {
+            background: var(--color-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .prompt-number {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .prompt-text {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+        }
+
+        .prompt-response {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .prompt-response:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+
+        .safety-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            background: #FEF3C7;
+            border-radius: var(--radius);
+            margin-top: 24px;
+        }
+
+        .safety-note-icon {
+            font-size: 1.25rem;
+        }
+
+        .safety-note-text {
+            font-size: 0.9rem;
+        }
+
+        .safety-note-text strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* More Screen */
+        .more-section {
+            margin-bottom: 24px;
+        }
+
+        .more-section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted);
+            margin-bottom: 12px;
+        }
+
+        .more-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--color-card);
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .more-item:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .more-item-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--color-bg-warm);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .more-item-content {
+            flex: 1;
+        }
+
+        .more-item-title {
+            font-weight: 500;
+        }
+
+        .more-item-desc {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .more-item-arrow {
+            color: var(--color-text-muted);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--color-card);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            padding-bottom: max(24px, env(safe-area-inset-bottom));
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--color-bg-warm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Manifesto Content */
+        .manifesto-content h2 {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+
+        .manifesto-content h3 {
+            font-size: 1rem;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .manifesto-content p {
+            margin-bottom: 12px;
+            color: var(--color-text-muted);
+        }
+
+        .manifesto-content ul {
+            margin-bottom: 12px;
+            padding-left: 20px;
+        }
+
+        .manifesto-content li {
+            margin-bottom: 8px;
+            color: var(--color-text-muted);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--color-text);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            font-weight: 500;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        /* History Screen */
+        .history-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--color-border);
+            background: var(--color-card);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: var(--color-text);
+            color: white;
+            border-color: var(--color-text);
+        }
+
+        /* Responsive */
+        @media (max-width: 380px) {
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .energy-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">Radical <span>Honesty</span></div>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="openModal('manifesto')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Dashboard Screen -->
+            <section id="screen-home" class="screen active">
+                <h1 class="greeting">Good <span id="time-greeting">afternoon</span>, Adrian</h1>
+                <p class="date-display" id="current-date">Friday, December 26, 2025</p>
+
+                <div class="core-question">
+                    <p>What would December 31, 2026 look like if I get radically honest now?</p>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-header">
+                        <span class="status-title">Current Quarter</span>
+                        <span class="status-badge q1">Q1</span>
+                    </div>
+                    <div class="quarter-info">
+                        <h3>Foundation</h3>
+                        <p class="quarter-theme">Establish the system. Observe patterns. Secure stability.</p>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-label">
+                            <span>Year Progress</span>
+                            <span id="weeks-progress">0/52 weeks</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-cards">
+                    <div class="action-card primary" onclick="showScreen('checkin')">
+                        <div class="action-card-icon">✍️</div>
+                        <div class="action-card-label">Weekly Check-In</div>
+                    </div>
+                    <div class="action-card" onclick="showScreen('cycles')">
+                        <div class="action-card-icon">🌀</div>
+                        <div class="action-card-label">Depth Cycles</div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2 class="section-title">Recent Check-Ins</h2>
+                    <span class="see-all" onclick="showScreen('history')">See All</span>
+                </div>
+
+                <div class="checkin-list" id="recent-checkins">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No check-ins yet.<br>Start your first week of radical honesty.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Check-In Screen -->
+            <section id="screen-checkin" class="screen">
+                <div class="form-header">
+                    <h1 class="form-title">Weekly Check-In</h1>
+                    <p class="form-subtitle" id="checkin-week">Week 1</p>
+                </div>
+
+                <div class="low-energy-toggle">
+                    <div class="toggle-label">
+                        <span>Low Energy Mode</span>
+                        <span>Just 2 questions. Still counts.</span>
+                    </div>
+                    <div class="toggle-switch" id="low-energy-toggle" onclick="toggleLowEnergy()"></div>
+                </div>
+
+                <form id="checkin-form">
+                    <div class="form-section" id="section-truth">
+                        <label class="form-label">1. Truth Snapshot</label>
+                        <p class="form-helper">What's actually true about this week that I might otherwise gloss over?</p>
+                        <textarea class="form-textarea" id="truth-snapshot" placeholder="The thing under the thing..."></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">2. Energy Reality</label>
+                        <p class="form-helper">Where was your energy this week?</p>
+                        <div class="energy-selector">
+                            <div class="energy-option survival" onclick="selectEnergy('survival', this)">
+                                <div class="energy-option-label">Survival</div>
+                                <div class="energy-option-desc">Getting through</div>
+                            </div>
+                            <div class="energy-option functional" onclick="selectEnergy('functional', this)">
+                                <div class="energy-option-label">Functional</div>
+                                <div class="energy-option-desc">Handling tasks</div>
+                            </div>
+                            <div class="energy-option capable" onclick="selectEnergy('capable', this)">
+                                <div class="energy-option-label">Capable</div>
+                                <div class="energy-option-desc">Some momentum</div>
+                            </div>
+                            <div class="energy-option expansive" onclick="selectEnergy('expansive', this)">
+                                <div class="energy-option-label">Expansive</div>
+                                <div class="energy-option-desc">Extra to give</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" id="section-commitments">
+                        <label class="form-label">3. Commitments Audit</label>
+                        <p class="form-helper">What did you commit to, and what happened?</p>
+                        <div class="commitment-input">
+                            <input type="text" class="form-input" id="commitment-input" placeholder="Add a commitment...">
+                            <button type="button" class="add-btn" onclick="addCommitment()">Add</button>
+                        </div>
+                        <div class="commitment-list" id="commitment-list"></div>
+                        <div style="margin-top: 16px;">
+                            <label class="form-label" style="font-size: 0.9rem;">Was renegotiating the right call?</label>
+                            <textarea class="form-textarea" id="renegotiation-reflection" placeholder="Reflect on any adjustments you made..." style="min-height: 80px;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">4. One Honest Win</label>
+                        <p class="form-helper">This can be survival. This can be small. The only requirement is that it's real.</p>
+                        <textarea class="form-textarea" id="honest-win" placeholder="One real win..." style="min-height: 80px;"></textarea>
+                    </div>
+
+                    <div class="form-section" id="section-truth-forward">
+                        <label class="form-label">5. One True Thing</label>
+                        <p class="form-helper">Not a goal. Not a task. A truth to carry into next week.</p>
+                        <textarea class="form-textarea" id="truth-forward" placeholder="What do you want to remember..." style="min-height: 80px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Journal Reference (optional)</label>
+                        <input type="text" class="form-input" id="journal-ref" placeholder="See journal, December 26...">
+                    </div>
+
+                    <button type="submit" class="submit-btn">Save Check-In</button>
+                </form>
+            </section>
+
+            <!-- Depth Cycles Screen -->
+            <section id="screen-cycles" class="screen">
+                <h1 class="form-title" style="margin-bottom: 8px;">Depth Cycles</h1>
+                <p class="cycles-intro">Seven doors. Open them when you're ready.</p>
+
+                <div id="cycles-list">
+                    <!-- Cycles rendered by JS -->
+                </div>
+            </section>
+
+            <!-- Cycle Detail Screen -->
+            <section id="screen-cycle-detail" class="screen">
+                <div class="cycle-detail-header">
+                    <button class="back-btn" onclick="showScreen('cycles')">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        Back to Cycles
+                    </button>
+                    <h1 class="cycle-detail-title" id="cycle-detail-title"></h1>
+                    <p class="cycle-detail-quote" id="cycle-detail-quote"></p>
+                </div>
+
+                <div class="framing-section">
+                    <div class="framing-title">The Framing</div>
+                    <p id="cycle-detail-framing"></p>
+                </div>
+
+                <h2 style="font-family: var(--font-serif); margin-bottom: 16px;">The Prompts</h2>
+                <div id="cycle-prompts"></div>
+
+                <div class="safety-note">
+                    <div class="safety-note-icon">🛡️</div>
+                    <div class="safety-note-text">
+                        <strong>Observation only.</strong>
+                        <span id="cycle-safety-text"></span>
+                    </div>
+                </div>
+
+                <button class="submit-btn" style="margin-top: 24px;" onclick="saveCycleProgress()">Save Progress</button>
+            </section>
+
+            <!-- History Screen -->
+            <section id="screen-history" class="screen">
+                <h1 class="form-title" style="margin-bottom: 16px;">Check-In History</h1>
+                
+                <div class="history-filters">
+                    <button class="filter-btn active" onclick="filterHistory('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterHistory('Q1', this)">Q1</button>
+                    <button class="filter-btn" onclick="filterHistory('Q2', this)">Q2</button>
+                    <button class="filter-btn" onclick="filterHistory('Q3', this)">Q3</button>
+                    <button class="filter-btn" onclick="filterHistory('Q4', this)">Q4</button>
+                </div>
+
+                <div class="checkin-list" id="history-list">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+
+            <!-- More Screen -->
+            <section id="screen-more" class="screen">
+                <h1 class="form-title" style="margin-bottom: 24px;">More</h1>
+
+                <div class="more-section">
+                    <div class="more-section-title">Reference</div>
+                    <div class="more-item" onclick="openModal('manifesto')">
+                        <div class="more-item-icon">📜</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">The Manifesto</div>
+                            <div class="more-item-desc">Core philosophy and design rules</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <div class="more-item" onclick="openModal('protocols')">
+                        <div class="more-item-icon">🛠️</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Protocols</div>
+                            <div class="more-item-desc">Re-entry, resets, low-energy versions</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                </div>
+
+                <div class="more-section">
+                    <div class="more-section-title">Quarterly</div>
+                    <div class="more-item" onclick="openModal('quarterly')">
+                        <div class="more-item-icon">📅</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Quarterly Rhythm</div>
+                            <div class="more-item-desc">Q1-Q4 themes and resets</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <div class="more-item" onclick="openModal('yearend')">
+                        <div class="more-item-icon">✨</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Year-End Artifact</div>
+                            <div class="more-item-desc">December 31, 2026</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                </div>
+
+                <div class="more-section">
+                    <div class="more-section-title">Data</div>
+                    <div class="more-item" onclick="exportData()">
+                        <div class="more-item-icon">💾</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Export Data</div>
+                            <div class="more-item-desc">Download all your check-ins</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-items">
+                <button class="nav-item active" onclick="showScreen('home')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    <span>Home</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('checkin')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    <span>Check-In</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('cycles')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    <span>Cycles</span>
+                </button>
+                <button class="nav-item" onclick="showScreen('more')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <span>More</span>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Title</h2>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-content" id="modal-content">
+                <!-- Content injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Saved!</div>
+
+    <script>
+        // Data
+        const STORAGE_KEY = 'radical-honesty-2026';
+        
+        let appData = {
+            checkins: [],
+            cycles: {},
+            settings: {
+                lowEnergyDefault: false
+            }
+        };
+
+        const depthCycles = [
+            {
+                id: 1,
+                title: "The Things You're Afraid to Want",
+                question: "What desires do you avoid admitting—ambitions, relationships, lifestyles?",
+                framing: "There are things you want that you've trained yourself not to say out loud. Some because they feel too big. Some because they feel selfish. Some because you tried once and were told no. This cycle is about naming them—not chasing them, just acknowledging they exist.",
+                prompts: [
+                    "What do I want that I've never said out loud to anyone?",
+                    "What do I dismiss as \"unrealistic\" before I even let myself want it?",
+                    "Whose voice tells me I can't have this? Where did that voice come from?",
+                    "If I knew no one would judge me, what would I admit I want?"
+                ],
+                safety: "Naming a want does not obligate you to pursue it. This is about seeing clearly, not acting immediately.",
+                pacing: "2-3 weeks"
+            },
+            {
+                id: 2,
+                title: "Power Dynamics in Your Everyday Life",
+                question: "Where do you feel small, where do you feel powerful, and why?",
+                framing: "Power isn't just about authority. It's about where you shrink, where you expand, and why. Some rooms make you feel like you don't belong. Some relationships make you feel like you're always explaining yourself. This cycle maps those dynamics so you can see them clearly.",
+                prompts: [
+                    "Where do I consistently feel smaller than I am?",
+                    "Where do I feel most like myself—most powerful, most free?",
+                    "Who do I perform for? What version of me do they think they're getting?",
+                    "What would change if I stopped shrinking in those spaces?"
+                ],
+                safety: "You're mapping territory, not declaring war. Notice where you feel small without needing to fix it yet.",
+                pacing: "2-4 weeks"
+            },
+            {
+                id: 3,
+                title: "Your Personal Mythology",
+                question: "What stories do you tell about yourself—consciously or not?",
+                framing: "You have a story about who you are. It runs in the background of every decision, every relationship, every risk you take or avoid. Some of it is true. Some of it was true once but isn't anymore. Some of it was never true—just useful, or familiar, or given to you by someone else.",
+                prompts: [
+                    "What's the story I tell about myself most often?",
+                    "Where did this story come from? Did I write it, or did someone give it to me?",
+                    "What does this story protect me from?",
+                    "What would I be allowed to do or feel if I let go of this story?"
+                ],
+                safety: "You don't have to rewrite your mythology this year. Just see it clearly for the first time.",
+                pacing: "3-4 weeks"
+            },
+            {
+                id: 4,
+                title: "The Identity You're Slowly Growing Out Of",
+                question: "What habits, beliefs, or roles are slipping away—and what's replacing them?",
+                framing: "Growth doesn't always feel like becoming more. Sometimes it feels like losing who you were. There's a version of you that you're leaving behind—and you might not have grieved it yet. This cycle creates space to acknowledge what's ending.",
+                prompts: [
+                    "Who was I two years ago that I'm no longer?",
+                    "What habits or beliefs am I holding onto that don't serve who I'm becoming?",
+                    "What would I lose if I fully let go of that old identity?",
+                    "What's emerging in its place?"
+                ],
+                safety: "Grief is part of this. You're allowed to miss who you were while still choosing who you're becoming.",
+                pacing: "2-3 weeks"
+            },
+            {
+                id: 5,
+                title: "Emotional Echoes",
+                question: "Something that happened years ago but still influences how you react today.",
+                framing: "Your reactions don't always match the moment. Sometimes you respond to something that happened years ago, not what's in front of you now. This cycle helps you identify where the echoes are loudest—so you can respond to the present instead of the past.",
+                prompts: [
+                    "When do I react more strongly than the situation calls for?",
+                    "What old experience does this echo?",
+                    "What was I protecting myself from then? Is that still true now?",
+                    "How would I respond differently if I were only responding to now?"
+                ],
+                safety: "This cycle can surface difficult memories. Go at your own pace. Skip prompts that feel too heavy. Return when you're ready.",
+                pacing: "3-4 weeks minimum"
+            },
+            {
+                id: 6,
+                title: "Your Relationship With Rest",
+                question: "Do you allow yourself to rest without guilt? What does real rest look like?",
+                framing: "For people with fluctuating capacity, rest isn't optional—it's infrastructure. But most of us have complicated relationships with rest. We feel guilty. We call it laziness. We rest while working, which means we do neither well. This cycle examines what rest actually means for you.",
+                prompts: [
+                    "What do I do when I need to rest? Is it actually restful?",
+                    "What messages did I receive about rest growing up?",
+                    "When do I feel guilty about resting? What belief drives that guilt?",
+                    "What would \"real rest\" look like if I truly allowed it?"
+                ],
+                safety: "You don't have to change your rest patterns right now. Just notice them honestly.",
+                pacing: "2 weeks"
+            },
+            {
+                id: 7,
+                title: "What You Consider \"Home\" Right Now",
+                question: "A place, a person, a habit, a smell, a routine. How has your definition changed?",
+                framing: "Home isn't always a location. It's whatever makes you feel like yourself. It might be a person, a ritual, a song, a time of day. As you change, what feels like home changes too. This cycle helps you identify what grounds you now—not what used to.",
+                prompts: [
+                    "What feels like home right now? (Not where—what.)",
+                    "What used to feel like home but doesn't anymore?",
+                    "What am I still looking for that would make me feel more at home in my life?",
+                    "How can I create more of that feeling with what I have now?"
+                ],
+                safety: "This cycle can surface longing. That's okay. Longing is data.",
+                pacing: "2-3 weeks"
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            updateGreeting();
+            updateDate();
+            renderRecentCheckins();
+            renderCycles();
+            setupForm();
+        });
+
+        // Data Management
+        function loadData() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                appData = JSON.parse(stored);
+            }
+            updateProgress();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+        }
+
+        // UI Functions
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'morning';
+            if (hour >= 12 && hour < 17) greeting = 'afternoon';
+            else if (hour >= 17) greeting = 'evening';
+            document.getElementById('time-greeting').textContent = greeting;
+        }
+
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        function updateProgress() {
+            const weeks = appData.checkins.length;
+            document.getElementById('weeks-progress').textContent = `${weeks}/52 weeks`;
+            document.getElementById('progress-fill').style.width = `${(weeks / 52) * 100}%`;
+            document.getElementById('checkin-week').textContent = `Week ${weeks + 1}`;
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(`screen-${screenId}`).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const navMap = { home: 0, checkin: 1, cycles: 2, more: 3, history: 0, 'cycle-detail': 2 };
+            document.querySelectorAll('.nav-item')[navMap[screenId]]?.classList.add('active');
+
+            if (screenId === 'history') renderHistory();
+            
+            window.scrollTo(0, 0);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Check-in Form
+        let selectedEnergy = null;
+        let commitments = [];
+        let lowEnergyMode = false;
+
+        function setupForm() {
+            document.getElementById('checkin-form').addEventListener('submit', handleSubmit);
+            document.getElementById('commitment-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    addCommitment();
+                }
+            });
+        }
+
+        function toggleLowEnergy() {
+            lowEnergyMode = !lowEnergyMode;
+            document.getElementById('low-energy-toggle').classList.toggle('active', lowEnergyMode);
+            
+            const sectionsToHide = ['section-truth', 'section-commitments', 'section-truth-forward'];
+            sectionsToHide.forEach(id => {
+                document.getElementById(id).style.display = lowEnergyMode ? 'none' : 'block';
+            });
+        }
+
+        function selectEnergy(energy, el) {
+            selectedEnergy = energy;
+            document.querySelectorAll('.energy-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function addCommitment() {
+            const input = document.getElementById('commitment-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            commitments.push({ text, status: null });
+            input.value = '';
+            renderCommitments();
+        }
+
+        function renderCommitments() {
+            const list = document.getElementById('commitment-list');
+            list.innerHTML = commitments.map((c, i) => `
+                <div class="commitment-item">
+                    <span class="commitment-text">${c.text}</span>
+                    <div class="commitment-status">
+                        <button type="button" class="status-btn ${c.status === 'kept' ? 'active' : ''}" onclick="setCommitmentStatus(${i}, 'kept')">Kept</button>
+                        <button type="button" class="status-btn ${c.status === 'renegotiated' ? 'active' : ''}" onclick="setCommitmentStatus(${i}, 'renegotiated')">Reneg.</button>
+                        <button type="button" class="status-btn ${c.status === 'dropped' ? 'active' : ''}" onclick="setCommitmentStatus(${i}, 'dropped')">Drop</button>
+                    </div>
+                    <button type="button" class="remove-btn" onclick="removeCommitment(${i})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function setCommitmentStatus(index, status) {
+            commitments[index].status = status;
+            renderCommitments();
+        }
+
+        function removeCommitment(index) {
+            commitments.splice(index, 1);
+            renderCommitments();
+        }
+
+        function handleSubmit(e) {
+            e.preventDefault();
+
+            if (!selectedEnergy) {
+                showToast('Please select your energy level');
+                return;
+            }
+
+            const checkin = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                week: appData.checkins.length + 1,
+                quarter: getQuarter(),
+                lowEnergyMode,
+                energy: selectedEnergy,
+                truthSnapshot: document.getElementById('truth-snapshot').value,
+                commitments: [...commitments],
+                renegotiationReflection: document.getElementById('renegotiation-reflection').value,
+                honestWin: document.getElementById('honest-win').value,
+                truthForward: document.getElementById('truth-forward').value,
+                journalRef: document.getElementById('journal-ref').value
+            };
+
+            appData.checkins.push(checkin);
+            saveData();
+
+            // Reset form
+            document.getElementById('checkin-form').reset();
+            selectedEnergy = null;
+            commitments = [];
+            document.querySelectorAll('.energy-option').forEach(e => e.classList.remove('selected'));
+            renderCommitments();
+            if (lowEnergyMode) toggleLowEnergy();
+
+            updateProgress();
+            renderRecentCheckins();
+            showToast('Check-in saved!');
+            showScreen('home');
+        }
+
+        function getQuarter() {
+            const month = new Date().getMonth();
+            if (month < 3) return 'Q1';
+            if (month < 6) return 'Q2';
+            if (month < 9) return 'Q3';
+            return 'Q4';
+        }
+
+        // Recent Check-ins
+        function renderRecentCheckins() {
+            const list = document.getElementById('recent-checkins');
+            const recent = appData.checkins.slice(-3).reverse();
+
+            if (recent.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No check-ins yet.<br>Start your first week of radical honesty.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = recent.map(c => `
+                <div class="checkin-item" onclick="viewCheckin(${c.id})">
+                    <div class="checkin-header">
+                        <span class="checkin-week">Week ${c.week}</span>
+                        <span class="energy-badge ${c.energy}">${c.energy}</span>
+                    </div>
+                    <p class="checkin-win">${c.honestWin || 'No win recorded'}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderHistory(filter = 'all') {
+            const list = document.getElementById('history-list');
+            let checkins = [...appData.checkins].reverse();
+
+            if (filter !== 'all') {
+                checkins = checkins.filter(c => c.quarter === filter);
+            }
+
+            if (checkins.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No check-ins ${filter !== 'all' ? 'for ' + filter : 'yet'}.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = checkins.map(c => `
+                <div class="checkin-item" onclick="viewCheckin(${c.id})">
+                    <div class="checkin-header">
+                        <span class="checkin-week">Week ${c.week} · ${new Date(c.date).toLocaleDateString()}</span>
+                        <span class="energy-badge ${c.energy}">${c.energy}</span>
+                    </div>
+                    <p class="checkin-win">${c.honestWin || 'No win recorded'}</p>
+                </div>
+            `).join('');
+        }
+
+        function filterHistory(filter, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderHistory(filter);
+        }
+
+        function viewCheckin(id) {
+            const checkin = appData.checkins.find(c => c.id === id);
+            if (!checkin) return;
+
+            openModal('checkin-detail', checkin);
+        }
+
+        // Depth Cycles
+        function renderCycles() {
+            const list = document.getElementById('cycles-list');
+            list.innerHTML = depthCycles.map(cycle => {
+                const status = appData.cycles[cycle.id]?.status || 'Not Started';
+                return `
+                    <div class="cycle-card" onclick="openCycle(${cycle.id})">
+                        <div class="cycle-number">Cycle ${cycle.id}</div>
+                        <div class="cycle-title">${cycle.title}</div>
+                        <div class="cycle-question">${cycle.question}</div>
+                        <span class="cycle-status ${status === 'In Progress' ? 'in-progress' : ''}">${status}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        let currentCycleId = null;
+
+        function openCycle(id) {
+            currentCycleId = id;
+            const cycle = depthCycles.find(c => c.id === id);
+            const saved = appData.cycles[id] || { responses: {} };
+
+            document.getElementById('cycle-detail-title').textContent = `Cycle ${cycle.id}: ${cycle.title}`;
+            document.getElementById('cycle-detail-quote').textContent = cycle.question;
+            document.getElementById('cycle-detail-framing').textContent = cycle.framing;
+            document.getElementById('cycle-safety-text').textContent = cycle.safety;
+
+            const promptsContainer = document.getElementById('cycle-prompts');
+            promptsContainer.innerHTML = cycle.prompts.map((prompt, i) => `
+                <div class="prompt-card">
+                    <div class="prompt-number">Prompt ${i + 1}</div>
+                    <div class="prompt-text">${prompt}</div>
+                    <textarea class="prompt-response" id="prompt-${i}" placeholder="Your reflection...">${saved.responses[i] || ''}</textarea>
+                </div>
+            `).join('');
+
+            showScreen('cycle-detail');
+        }
+
+        function saveCycleProgress() {
+            const cycle = depthCycles.find(c => c.id === currentCycleId);
+            const responses = {};
+            
+            cycle.prompts.forEach((_, i) => {
+                responses[i] = document.getElementById(`prompt-${i}`).value;
+            });
+
+            const hasContent = Object.values(responses).some(r => r.trim());
+            
+            appData.cycles[currentCycleId] = {
+                status: hasContent ? 'In Progress' : 'Not Started',
+                responses,
+                lastUpdated: new Date().toISOString()
+            };
+
+            saveData();
+            renderCycles();
+            showToast('Progress saved!');
+        }
+
+        // Modals
+        function openModal(type, data = null) {
+            const overlay = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+
+            switch (type) {
+                case 'manifesto':
+                    title.textContent = 'The Manifesto';
+                    content.innerHTML = `
+                        <div class="manifesto-content">
+                            <p><em>What would December 31, 2026 look like if I get radically honest now?</em></p>
+                            
+                            <h2>The Four Non-Negotiables</h2>
+                            
+                            <h3>1. Honesty Before Action</h3>
+                            <p>You cannot build on a lie. Before optimizing, before planning, before committing—tell the truth about where you actually are.</p>
+                            
+                            <h3>2. Systems Over Willpower</h3>
+                            <p>Willpower is a finite resource. Systems run when motivation doesn't.</p>
+                            
+                            <h3>3. Capacity-Aware Design</h3>
+                            <p>Bad days are included in the plan, not exceptions to it. Rest is infrastructure, not reward.</p>
+                            
+                            <h3>4. Identity Is Shaped by Repetition</h3>
+                            <p>You become who you practice being. Small, honest repetitions compound.</p>
+                            
+                            <h2>Design Rules</h2>
+                            <ul>
+                                <li>No daily streaks</li>
+                                <li>No punishment for skipping</li>
+                                <li>No "catching up"</li>
+                                <li>Everything has a low-energy version</li>
+                                <li>Rest is treated as infrastructure</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+
+                case 'protocols':
+                    title.textContent = 'Protocols';
+                    content.innerHTML = `
+                        <div class="manifesto-content">
+                            <h2>Re-Entry Protocol</h2>
+                            <p>When you've been away for 2+ weeks: Do one check-in. First question: "What's true about why I stepped away?"</p>
+                            <p>No backfilling. No guilt. Just: here's where I am now.</p>
+                            
+                            <h2>Low-Energy Versions</h2>
+                            <ul>
+                                <li><strong>Weekly Check-In:</strong> Energy + One Honest Win only</li>
+                                <li><strong>Depth Cycle:</strong> Read framing only, no writing</li>
+                                <li><strong>Quarterly Reset:</strong> "Still aligned" or "Need adjustment"</li>
+                            </ul>
+                            
+                            <h2>Quarterly Reset Questions</h2>
+                            <ul>
+                                <li>What weekly pattern emerged that I didn't expect?</li>
+                                <li>What did I consistently avoid?</li>
+                                <li>Is my capacity assumption still accurate?</li>
+                            </ul>
+                            
+                            <h2>Your Capacity Baseline</h2>
+                            <p>4-5 days functional/capable. 1-2 days survival/recovery. Expansive days are a bonus.</p>
+                        </div>
+                    `;
+                    break;
+
+                case 'quarterly':
+                    title.textContent = 'Quarterly Rhythm';
+                    content.innerHTML = `
+                        <div class="manifesto-content">
+                            <h2>Q1: Foundation (Jan-Mar)</h2>
+                            <p>Establish the system. Observe patterns. Secure stability.</p>
+                            
+                            <h2>Q2: Stabilization (Apr-Jun)</h2>
+                            <p>Integrate new work. Refine what's working. Begin one Depth Cycle.</p>
+                            
+                            <h2>Q3: Expansion (Jul-Sep)</h2>
+                            <p>Add complexity only if capacity supports it.</p>
+                            
+                            <h2>Q4: Integration (Oct-Dec)</h2>
+                            <p>Review what held. Prepare to close the year with honesty.</p>
+                        </div>
+                    `;
+                    break;
+
+                case 'yearend':
+                    title.textContent = 'Year-End Artifact';
+                    content.innerHTML = `
+                        <div class="manifesto-content">
+                            <h2>If I Get Radically Honest</h2>
+                            <p><em>December 31, 2026</em></p>
+                            <p>This page waits for you. Not goals achieved. Not habits built. Just: here's what I now know is true about my life, my wants, my capacity, my identity—that I couldn't say on January 1.</p>
+                            
+                            <h3>What you'll write:</h3>
+                            <ul>
+                                <li>What systems held</li>
+                                <li>What changed about how you see yourself</li>
+                                <li>What you're now able to say</li>
+                                <li>What you now know you want</li>
+                                <li>What you're leaving behind</li>
+                                <li>What you're carrying forward</li>
+                            </ul>
+                        </div>
+                    `;
+                    break;
+
+                case 'checkin-detail':
+                    title.textContent = `Week ${data.week}`;
+                    content.innerHTML = `
+                        <div class="manifesto-content">
+                            <p><strong>Date:</strong> ${new Date(data.date).toLocaleDateString()}</p>
+                            <p><strong>Energy:</strong> <span class="energy-badge ${data.energy}" style="display: inline-block;">${data.energy}</span></p>
+                            
+                            ${data.truthSnapshot ? `<h3>Truth Snapshot</h3><p>${data.truthSnapshot}</p>` : ''}
+                            
+                            ${data.honestWin ? `<h3>Honest Win</h3><p>${data.honestWin}</p>` : ''}
+                            
+                            ${data.truthForward ? `<h3>Truth to Carry Forward</h3><p>${data.truthForward}</p>` : ''}
+                            
+                            ${data.commitments?.length ? `
+                                <h3>Commitments</h3>
+                                <ul>
+                                    ${data.commitments.map(c => `<li>${c.text} — ${c.status || 'no status'}</li>`).join('')}
+                                </ul>
+                            ` : ''}
+                            
+                            ${data.renegotiationReflection ? `<h3>Renegotiation Reflection</h3><p>${data.renegotiationReflection}</p>` : ''}
+                            
+                            ${data.journalRef ? `<p><strong>Journal:</strong> ${data.journalRef}</p>` : ''}
+                        </div>
+                    `;
+                    break;
+            }
+
+            overlay.classList.add('active');
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        // Export
+        function exportData() {
+            const dataStr = JSON.stringify(appData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `radical-honesty-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Data exported!');
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed'));
+        }
+    </script>
+</body>
+</html>
