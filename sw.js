@@ -1,4 +1,4 @@
-const CACHE_NAME = 'radical-honesty-v1';
+const CACHE_NAME = 'radical-honesty-v2';
 const urlsToCache = [
   '/',
   '/index.html',
