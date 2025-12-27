@@ -1382,6 +1382,112 @@
                 </div>
             </section>
 
+            <!-- Pattern Insights Screen -->
+            <section id="screen-patterns" class="screen">
+                <h1 class="form-title" style="margin-bottom: 16px;">Pattern Insights</h1>
+                <p class="cycles-intro">What the data reveals about your year.</p>
+
+                <div id="patterns-content">
+                    <!-- Rendered by JS -->
+                </div>
+            </section>
+
+            <!-- Quarterly Reset Screen -->
+            <section id="screen-quarterly-reset" class="screen">
+                <h1 class="form-title" style="margin-bottom: 8px;">Quarterly Reset</h1>
+                <p class="cycles-intro">Pause. Reflect. Recalibrate.</p>
+
+                <div class="status-card" style="margin-bottom: 24px;">
+                    <div class="status-header">
+                        <span class="status-title">Select Quarter</span>
+                    </div>
+                    <div class="energy-selector" style="grid-template-columns: repeat(4, 1fr); gap: 8px;">
+                        <div class="energy-option" style="padding: 12px 8px;" onclick="selectQuarterReset('Q1', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Q1</div>
+                        </div>
+                        <div class="energy-option" style="padding: 12px 8px;" onclick="selectQuarterReset('Q2', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Q2</div>
+                        </div>
+                        <div class="energy-option" style="padding: 12px 8px;" onclick="selectQuarterReset('Q3', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Q3</div>
+                        </div>
+                        <div class="energy-option" style="padding: 12px 8px;" onclick="selectQuarterReset('Q4', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Q4</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="quarterly-reset-form" onsubmit="saveQuarterlyReset(event)">
+                    <div class="form-section">
+                        <label class="form-label">What weekly pattern emerged that you didn't expect?</label>
+                        <textarea class="form-textarea" id="qr-pattern" placeholder="What surprised you..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What did you consistently avoid?</label>
+                        <textarea class="form-textarea" id="qr-avoided" placeholder="What you kept not doing..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">Is your capacity baseline still accurate?</label>
+                        <p class="form-helper">4-5 days functional/capable. 1-2 days survival/recovery.</p>
+                        <textarea class="form-textarea" id="qr-capacity" placeholder="What's true now..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What needs to shift next quarter?</label>
+                        <textarea class="form-textarea" id="qr-shift" placeholder="Not goals. Just: what needs adjusting..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Save Quarterly Reflection</button>
+                </form>
+            </section>
+
+            <!-- Year-End Artifact Screen -->
+            <section id="screen-yearend-artifact" class="screen">
+                <h1 class="form-title" style="margin-bottom: 8px;">If I Get Radically Honest</h1>
+                <p class="cycles-intro">December 31, 2026</p>
+
+                <div class="framing-section" style="margin-bottom: 24px;">
+                    <div class="framing-title">The Question</div>
+                    <p style="font-style: italic; color: var(--color-text-muted);">Here's what I now know is true about my life, my wants, my capacity, my identity—that I couldn't say on January 1, 2026.</p>
+                </div>
+
+                <form id="yearend-form" onsubmit="saveYearEnd(event)">
+                    <div class="form-section">
+                        <label class="form-label">What systems held?</label>
+                        <textarea class="form-textarea" id="ye-systems" placeholder="What actually worked all year..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What changed about how you see yourself?</label>
+                        <textarea class="form-textarea" id="ye-identity" placeholder="The shift in self-perception..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What you're now able to say?</label>
+                        <textarea class="form-textarea" id="ye-able-to-say" placeholder="Truths you can now speak..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What you now know you want?</label>
+                        <textarea class="form-textarea" id="ye-wants" placeholder="Desires that became clear..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What you're leaving behind?</label>
+                        <textarea class="form-textarea" id="ye-leaving" placeholder="What no longer serves..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What you're carrying forward?</label>
+                        <textarea class="form-textarea" id="ye-carrying" placeholder="What you're taking into 2027..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Save Year-End Artifact</button>
+                </form>
+            </section>
+
             <!-- More Screen -->
             <section id="screen-more" class="screen">
                 <h1 class="form-title" style="margin-bottom: 24px;">More</h1>
@@ -1427,6 +1533,34 @@
                 </div>
 
                 <div class="more-section">
+                    <div class="more-section-title">Your Year</div>
+                    <div class="more-item" onclick="showScreen('patterns')">
+                        <div class="more-item-icon">📊</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Pattern Insights</div>
+                            <div class="more-item-desc">What the data reveals</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <div class="more-item" onclick="showScreen('quarterly-reset')">
+                        <div class="more-item-icon">🔄</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Quarterly Reset</div>
+                            <div class="more-item-desc">Reflect and recalibrate</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <div class="more-item" onclick="showScreen('yearend-artifact')">
+                        <div class="more-item-icon">✨</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Year-End Artifact</div>
+                            <div class="more-item-desc">December 31, 2026</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                </div>
+
+                <div class="more-section">
                     <div class="more-section-title">Data</div>
                     <div class="more-item" onclick="exportData()">
                         <div class="more-item-icon">💾</div>
@@ -1436,6 +1570,15 @@
                         </div>
                         <div class="more-item-arrow">→</div>
                     </div>
+                    <div class="more-item" onclick="document.getElementById('import-file').click()">
+                        <div class="more-item-icon">📥</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Import Data</div>
+                            <div class="more-item-desc">Restore from backup</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)">
                 </div>
             </section>
         </main>
@@ -1494,6 +1637,8 @@
         let appData = {
             checkins: [],
             cycles: {},
+            quarterlyResets: {},
+            yearEndArtifact: {},
             settings: {
                 lowEnergyDefault: false
             }
@@ -1618,6 +1763,10 @@
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 appData = JSON.parse(stored);
+
+                // Ensure new data structures exist (backward compatibility)
+                if (!appData.quarterlyResets) appData.quarterlyResets = {};
+                if (!appData.yearEndArtifact) appData.yearEndArtifact = {};
             }
             updateProgress();
         }
@@ -1649,14 +1798,39 @@
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(`screen-${screenId}`).classList.add('active');
-            
+
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const navMap = { home: 0, checkin: 1, cycles: 2, more: 3, history: 0, 'cycle-detail': 2 };
+            const navMap = {
+                home: 0,
+                checkin: 1,
+                cycles: 2,
+                more: 3,
+                history: 0,
+                'cycle-detail': 2,
+                patterns: 3,
+                'quarterly-reset': 3,
+                'yearend-artifact': 3
+            };
             document.querySelectorAll('.nav-item')[navMap[screenId]]?.classList.add('active');
 
+            // Screen-specific rendering
             if (screenId === 'history') renderHistory();
-            
+            if (screenId === 'patterns') renderPatterns();
+            if (screenId === 'yearend-artifact') loadYearEndArtifact();
+
             window.scrollTo(0, 0);
+        }
+
+        function loadYearEndArtifact() {
+            const saved = appData.yearEndArtifact;
+            if (saved && Object.keys(saved).length > 0) {
+                document.getElementById('ye-systems').value = saved.systems || '';
+                document.getElementById('ye-identity').value = saved.identity || '';
+                document.getElementById('ye-able-to-say').value = saved.ableToSay || '';
+                document.getElementById('ye-wants').value = saved.wants || '';
+                document.getElementById('ye-leaving').value = saved.leaving || '';
+                document.getElementById('ye-carrying').value = saved.carrying || '';
+            }
         }
 
         function showToast(message) {
@@ -2188,6 +2362,315 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast('Data exported!');
+        }
+
+        // Import
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+
+                    // Validate structure
+                    if (!imported.checkins || !Array.isArray(imported.checkins)) {
+                        showToast('Invalid backup file');
+                        return;
+                    }
+
+                    // Merge or replace - ask user
+                    if (appData.checkins.length > 0) {
+                        if (confirm('Replace existing data or merge with current data?\n\nOK = Replace\nCancel = Merge')) {
+                            appData = imported;
+                        } else {
+                            // Merge logic
+                            const existingIds = new Set(appData.checkins.map(c => c.id));
+                            imported.checkins.forEach(c => {
+                                if (!existingIds.has(c.id)) {
+                                    appData.checkins.push(c);
+                                }
+                            });
+                            // Merge cycles
+                            appData.cycles = { ...appData.cycles, ...imported.cycles };
+                            appData.quarterlyResets = { ...appData.quarterlyResets, ...(imported.quarterlyResets || {}) };
+                            appData.yearEndArtifact = imported.yearEndArtifact || appData.yearEndArtifact;
+
+                            // Re-sort and renumber
+                            appData.checkins.sort((a, b) => new Date(a.date) - new Date(b.date));
+                            appData.checkins.forEach((c, i) => c.week = i + 1);
+                        }
+                    } else {
+                        appData = imported;
+                    }
+
+                    // Ensure new structure exists
+                    if (!appData.quarterlyResets) appData.quarterlyResets = {};
+                    if (!appData.yearEndArtifact) appData.yearEndArtifact = {};
+
+                    saveData();
+                    updateProgress();
+                    renderRecentCheckins();
+                    renderCycles();
+                    showToast('Data imported!');
+                } catch (err) {
+                    showToast('Error reading file');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+
+            // Reset input
+            event.target.value = '';
+        }
+
+        // Quarterly Reset
+        let selectedQuarterReset = null;
+
+        function selectQuarterReset(quarter, el) {
+            selectedQuarterReset = quarter;
+            document.querySelectorAll('#screen-quarterly-reset .energy-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
+
+            // Load existing data if present
+            const saved = appData.quarterlyResets[quarter];
+            if (saved) {
+                document.getElementById('qr-pattern').value = saved.pattern || '';
+                document.getElementById('qr-avoided').value = saved.avoided || '';
+                document.getElementById('qr-capacity').value = saved.capacity || '';
+                document.getElementById('qr-shift').value = saved.shift || '';
+            } else {
+                document.getElementById('quarterly-reset-form').reset();
+            }
+        }
+
+        function saveQuarterlyReset(e) {
+            e.preventDefault();
+
+            if (!selectedQuarterReset) {
+                showToast('Please select a quarter');
+                return;
+            }
+
+            appData.quarterlyResets[selectedQuarterReset] = {
+                pattern: document.getElementById('qr-pattern').value,
+                avoided: document.getElementById('qr-avoided').value,
+                capacity: document.getElementById('qr-capacity').value,
+                shift: document.getElementById('qr-shift').value,
+                savedAt: new Date().toISOString()
+            };
+
+            saveData();
+            showToast(`${selectedQuarterReset} reflection saved!`);
+        }
+
+        // Year-End Artifact
+        function saveYearEnd(e) {
+            e.preventDefault();
+
+            appData.yearEndArtifact = {
+                systems: document.getElementById('ye-systems').value,
+                identity: document.getElementById('ye-identity').value,
+                ableToSay: document.getElementById('ye-able-to-say').value,
+                wants: document.getElementById('ye-wants').value,
+                leaving: document.getElementById('ye-leaving').value,
+                carrying: document.getElementById('ye-carrying').value,
+                savedAt: new Date().toISOString()
+            };
+
+            saveData();
+            showToast('Year-End Artifact saved!');
+        }
+
+        // Pattern Insights
+        function renderPatterns() {
+            const container = document.getElementById('patterns-content');
+
+            if (appData.checkins.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <p>Not enough data yet.<br>Patterns emerge over time.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate stats
+            const totalCheckins = appData.checkins.length;
+            const energyCounts = {
+                survival: 0,
+                functional: 0,
+                capable: 0,
+                expansive: 0
+            };
+
+            appData.checkins.forEach(c => {
+                if (c.energy) energyCounts[c.energy]++;
+            });
+
+            // Commitment stats
+            let totalCommitments = 0;
+            let keptCount = 0;
+            let renegotiatedCount = 0;
+            let droppedCount = 0;
+
+            appData.checkins.forEach(c => {
+                if (c.commitments) {
+                    c.commitments.forEach(comm => {
+                        totalCommitments++;
+                        if (comm.status === 'kept') keptCount++;
+                        else if (comm.status === 'renegotiated') renegotiatedCount++;
+                        else if (comm.status === 'dropped') droppedCount++;
+                    });
+                }
+            });
+
+            // Low energy mode usage
+            const lowEnergyCount = appData.checkins.filter(c => c.lowEnergyMode).length;
+
+            // Depth cycles
+            const cyclesInProgress = Object.keys(appData.cycles).filter(id =>
+                appData.cycles[id].status === 'In Progress'
+            ).length;
+
+            container.innerHTML = `
+                <div class="status-card" style="margin-bottom: 16px;">
+                    <div class="status-header">
+                        <span class="status-title">Overview</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 600; color: var(--color-accent);">${totalCheckins}</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-muted);">Check-ins</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 600; color: var(--color-accent);">${Math.round(totalCheckins / 52 * 100)}%</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-muted);">Year Complete</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 600; color: var(--color-accent);">${cyclesInProgress}</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-muted);">Cycles Active</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 600; color: var(--color-accent);">${lowEnergyCount}</div>
+                            <div style="font-size: 0.85rem; color: var(--color-text-muted);">Low Energy Weeks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-card" style="margin-bottom: 16px;">
+                    <div class="status-header">
+                        <span class="status-title">Energy Distribution</span>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        ${renderEnergyBar('Survival', energyCounts.survival, totalCheckins, 'var(--color-survival)')}
+                        ${renderEnergyBar('Functional', energyCounts.functional, totalCheckins, 'var(--color-functional)')}
+                        ${renderEnergyBar('Capable', energyCounts.capable, totalCheckins, 'var(--color-capable)')}
+                        ${renderEnergyBar('Expansive', energyCounts.expansive, totalCheckins, 'var(--color-expansive)')}
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: var(--color-text-muted); font-style: italic;">
+                        Your most common energy level: <strong>${getMostCommonEnergy(energyCounts)}</strong>
+                    </p>
+                </div>
+
+                ${totalCommitments > 0 ? `
+                <div class="status-card" style="margin-bottom: 16px;">
+                    <div class="status-header">
+                        <span class="status-title">Commitments</span>
+                    </div>
+                    <div style="margin-top: 16px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 0.9rem;">Kept</span>
+                            <span style="font-weight: 600; color: var(--color-success);">${keptCount} (${Math.round(keptCount/totalCommitments*100)}%)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span style="font-size: 0.9rem;">Renegotiated</span>
+                            <span style="font-weight: 600; color: var(--color-accent);">${renegotiatedCount} (${Math.round(renegotiatedCount/totalCommitments*100)}%)</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="font-size: 0.9rem;">Dropped</span>
+                            <span style="font-weight: 600; color: var(--color-text-muted);">${droppedCount} (${Math.round(droppedCount/totalCommitments*100)}%)</span>
+                        </div>
+                    </div>
+                    <p style="margin-top: 16px; font-size: 0.9rem; color: var(--color-text-muted); font-style: italic;">
+                        ${getCommitmentInsight(keptCount, renegotiatedCount, droppedCount, totalCommitments)}
+                    </p>
+                </div>
+                ` : ''}
+
+                <div class="status-card">
+                    <div class="status-header">
+                        <span class="status-title">What This Reveals</span>
+                    </div>
+                    <p style="margin-top: 12px; color: var(--color-text-muted); line-height: 1.6;">
+                        ${getPersonalizedInsight(energyCounts, totalCheckins, lowEnergyCount)}
+                    </p>
+                </div>
+            `;
+        }
+
+        function renderEnergyBar(label, count, total, color) {
+            const percentage = total > 0 ? Math.round(count / total * 100) : 0;
+            return `
+                <div style="margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 4px;">
+                        <span>${label}</span>
+                        <span style="font-weight: 600;">${count} weeks (${percentage}%)</span>
+                    </div>
+                    <div style="height: 8px; background: var(--color-bg-warm); border-radius: 4px; overflow: hidden;">
+                        <div style="height: 100%; width: ${percentage}%; background: ${color}; border-radius: 4px; transition: width 0.5s;"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getMostCommonEnergy(counts) {
+            const entries = Object.entries(counts);
+            if (entries.length === 0) return 'Unknown';
+            const max = entries.reduce((a, b) => a[1] > b[1] ? a : b);
+            return max[0].charAt(0).toUpperCase() + max[0].slice(1);
+        }
+
+        function getCommitmentInsight(kept, reneg, dropped, total) {
+            const keptPct = kept / total;
+            const renegPct = reneg / total;
+
+            if (keptPct > 0.7) return "You're keeping most commitments. Strong follow-through.";
+            if (renegPct > 0.5) return "You renegotiate frequently. This is adaptive capacity awareness.";
+            if (dropped / total > 0.5) return "Many dropped commitments. Consider committing to less, or examining what blocks follow-through.";
+            return "A balanced mix. You're learning what's realistic.";
+        }
+
+        function getPersonalizedInsight(energyCounts, total, lowEnergyCount) {
+            const survivalPct = energyCounts.survival / total;
+            const functionalPct = energyCounts.functional / total;
+            const capablePct = energyCounts.capable / total;
+            const expansivePct = energyCounts.expansive / total;
+            const lowEnergyPct = lowEnergyCount / total;
+
+            let insights = [];
+
+            if (survivalPct > 0.4) {
+                insights.push("Over 40% of your weeks are survival mode. This is real data about your capacity. Systems need to assume this baseline.");
+            } else if (survivalPct < 0.15) {
+                insights.push("Survival weeks are rare for you. Your capacity baseline may be higher than expected.");
+            }
+
+            if (lowEnergyPct > 0.3) {
+                insights.push("You use low-energy mode often. This is the system working as designed—honesty over performance.");
+            }
+
+            if (capablePct + expansivePct > 0.6) {
+                insights.push("Most weeks you're capable or better. Consider: are you building on this momentum, or just surviving it?");
+            }
+
+            if (insights.length === 0) {
+                insights.push("Your energy distribution is varied. This is what capacity-aware design accounts for—the full spectrum.");
+            }
+
+            return insights.join(' ');
         }
 
         // Service Worker Registration
