@@ -1994,6 +1994,22 @@
             document.getElementById('checkin-week').textContent = `Week ${appData.checkins.length + 1}`;
             document.getElementById('submit-checkin-btn').style.display = 'block';
             document.getElementById('edit-buttons').style.display = 'none';
+
+            // Show active cycle section if there's a cycle in progress
+            const activeCycle = Object.keys(appData.cycles).find(id =>
+                appData.cycles[id].status === 'In Progress'
+            );
+
+            if (activeCycle) {
+                const cycle = depthCycles.find(c => c.id === parseInt(activeCycle));
+                if (cycle) {
+                    document.getElementById('active-cycle-name').textContent = cycle.title;
+                    document.getElementById('active-cycle-section').style.display = 'block';
+                }
+            } else {
+                document.getElementById('active-cycle-section').style.display = 'none';
+            }
+
             showScreen('checkin');
         }
 
@@ -2002,35 +2018,51 @@
             if (!checkin) return;
 
             editingCheckinId = id;
-            
+
             // Populate form with existing data
             document.getElementById('truth-snapshot').value = checkin.truthSnapshot || '';
             document.getElementById('renegotiation-reflection').value = checkin.renegotiationReflection || '';
             document.getElementById('honest-win').value = checkin.honestWin || '';
             document.getElementById('truth-forward').value = checkin.truthForward || '';
             document.getElementById('journal-ref').value = checkin.journalRef || '';
-            
+
             // Set energy
             selectedEnergy = checkin.energy;
             document.querySelectorAll('.energy-option').forEach(e => {
                 e.classList.toggle('selected', e.classList.contains(checkin.energy));
             });
-            
+
             // Set commitments
             commitments = checkin.commitments ? [...checkin.commitments] : [];
             renderCommitments();
-            
+
             // Set low energy mode
             if (checkin.lowEnergyMode !== lowEnergyMode) {
                 toggleLowEnergy();
             }
-            
+
+            // Show active cycle section if there was cycle reflection data
+            const activeCycle = Object.keys(appData.cycles).find(id =>
+                appData.cycles[id].status === 'In Progress'
+            );
+
+            if (activeCycle || checkin.cycleReflection) {
+                const cycle = depthCycles.find(c => c.id === parseInt(activeCycle));
+                if (cycle) {
+                    document.getElementById('active-cycle-name').textContent = cycle.title;
+                }
+                document.getElementById('cycle-reflection').value = checkin.cycleReflection || '';
+                document.getElementById('active-cycle-section').style.display = 'block';
+            } else {
+                document.getElementById('active-cycle-section').style.display = 'none';
+            }
+
             // Update UI
             document.getElementById('checkin-form-title').textContent = 'Edit Check-In';
             document.getElementById('checkin-week').textContent = `Week ${checkin.week}`;
             document.getElementById('submit-checkin-btn').style.display = 'none';
             document.getElementById('edit-buttons').style.display = 'flex';
-            
+
             closeModal();
             showScreen('checkin');
         }
@@ -2048,6 +2080,8 @@
             document.querySelectorAll('.energy-option').forEach(e => e.classList.remove('selected'));
             renderCommitments();
             if (lowEnergyMode) toggleLowEnergy();
+            document.getElementById('cycle-reflection').value = '';
+            document.getElementById('active-cycle-section').style.display = 'none';
         }
 
         function deleteCheckin(id) {
@@ -2142,7 +2176,8 @@
                 renegotiationReflection: document.getElementById('renegotiation-reflection').value,
                 honestWin: document.getElementById('honest-win').value,
                 truthForward: document.getElementById('truth-forward').value,
-                journalRef: document.getElementById('journal-ref').value
+                journalRef: document.getElementById('journal-ref').value,
+                cycleReflection: document.getElementById('cycle-reflection').value
             };
 
             if (editingCheckinId) {
@@ -2417,9 +2452,11 @@
                             ` : ''}
                             
                             ${data.renegotiationReflection ? `<h3>Renegotiation Reflection</h3><p>${data.renegotiationReflection}</p>` : ''}
-                            
+
+                            ${data.cycleReflection ? `<h3>Cycle Reflection</h3><p>${data.cycleReflection}</p>` : ''}
+
                             ${data.journalRef ? `<p><strong>Journal:</strong> ${data.journalRef}</p>` : ''}
-                            
+
                             <div class="detail-actions">
                                 <button class="detail-btn edit" onclick="editCheckin(${data.id})">
                                     <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -2961,6 +2998,10 @@
 
                 if (c.truthForward) {
                     markdown += `**Truth to Carry Forward:**\n${c.truthForward}\n\n`;
+                }
+
+                if (c.cycleReflection) {
+                    markdown += `**Cycle Reflection:**\n${c.cycleReflection}\n\n`;
                 }
 
                 if (c.journalRef) {
