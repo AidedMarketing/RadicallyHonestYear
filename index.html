@@ -1194,6 +1194,20 @@
                     <p>What would December 31, 2026 look like if I get radically honest now?</p>
                 </div>
 
+                <!-- Re-Entry Support -->
+                <div id="reentry-notice" style="display: none; background: var(--color-bg-warm); padding: 16px; border-radius: var(--radius); margin-bottom: 16px; border-left: 3px solid var(--color-accent);">
+                    <p style="margin-bottom: 8px; color: var(--color-text);"><strong>It's been <span id="days-since"></span> days.</strong></p>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">Ready to check in, or still in rest mode?</p>
+                    <button class="submit-btn btn-secondary" onclick="openModal('protocols')" style="padding: 10px 16px; font-size: 0.9rem;">Re-Entry Protocol</button>
+                </div>
+
+                <!-- Quarter Transition -->
+                <div id="quarter-transition" style="display: none; background: linear-gradient(135deg, var(--color-accent-light) 0%, var(--color-bg-warm) 100%); padding: 16px; border-radius: var(--radius); margin-bottom: 16px; text-align: center;">
+                    <p style="margin-bottom: 4px; font-weight: 600; color: var(--color-text);"><span id="new-quarter-name"></span></p>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 8px;"><span id="quarter-theme"></span></p>
+                    <p style="font-size: 0.85rem; color: var(--color-text-muted); font-style: italic;">Consider doing your quarterly reset.</p>
+                </div>
+
                 <div class="status-card">
                     <div class="status-header">
                         <span class="status-title">Current Quarter</span>
@@ -1362,13 +1376,39 @@
                     </div>
                 </div>
 
+                <div class="form-section" style="margin-top: 24px;">
+                    <label class="form-label">Cycle Status</label>
+                    <p class="form-helper">Where are you with this cycle right now?</p>
+                    <div class="energy-selector" style="grid-template-columns: 1fr 1fr;">
+                        <div class="energy-option" onclick="selectCycleStatus('Not Started', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Not Started</div>
+                        </div>
+                        <div class="energy-option" onclick="selectCycleStatus('In Progress', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">In Progress</div>
+                        </div>
+                        <div class="energy-option" onclick="selectCycleStatus('Resting', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Resting</div>
+                        </div>
+                        <div class="energy-option" onclick="selectCycleStatus('Revisiting', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Revisiting</div>
+                        </div>
+                        <div class="energy-option" onclick="selectCycleStatus('Completed', this)">
+                            <div class="energy-option-label" style="font-size: 0.9rem;">Completed</div>
+                        </div>
+                    </div>
+                </div>
+
                 <button class="submit-btn" style="margin-top: 24px;" onclick="saveCycleProgress()">Save Progress</button>
             </section>
 
             <!-- History Screen -->
             <section id="screen-history" class="screen">
                 <h1 class="form-title" style="margin-bottom: 16px;">Check-In History</h1>
-                
+
+                <div class="form-section" style="margin-bottom: 16px;">
+                    <input type="text" class="form-input" id="search-input" placeholder="Search check-ins..." oninput="searchCheckins(this.value)">
+                </div>
+
                 <div class="history-filters">
                     <button class="filter-btn active" onclick="filterHistory('all', this)">All</button>
                     <button class="filter-btn" onclick="filterHistory('Q1', this)">Q1</button>
@@ -1565,8 +1605,16 @@
                     <div class="more-item" onclick="exportData()">
                         <div class="more-item-icon">💾</div>
                         <div class="more-item-content">
-                            <div class="more-item-title">Export Data</div>
-                            <div class="more-item-desc">Download all your check-ins</div>
+                            <div class="more-item-title">Export Data (JSON)</div>
+                            <div class="more-item-desc">Backup for restore</div>
+                        </div>
+                        <div class="more-item-arrow">→</div>
+                    </div>
+                    <div class="more-item" onclick="exportMarkdown()">
+                        <div class="more-item-icon">📄</div>
+                        <div class="more-item-content">
+                            <div class="more-item-title">Export Readable</div>
+                            <div class="more-item-desc">Markdown for reflection</div>
                         </div>
                         <div class="more-item-arrow">→</div>
                     </div>
@@ -1756,6 +1804,7 @@
             renderRecentCheckins();
             renderCycles();
             setupForm();
+            checkReentryAndQuarter();
         });
 
         // Data Management
@@ -1814,6 +1863,7 @@
             document.querySelectorAll('.nav-item')[navMap[screenId]]?.classList.add('active');
 
             // Screen-specific rendering
+            if (screenId === 'home') checkReentryAndQuarter();
             if (screenId === 'history') renderHistory();
             if (screenId === 'patterns') renderPatterns();
             if (screenId === 'yearend-artifact') loadYearEndArtifact();
@@ -2077,41 +2127,6 @@
             `).join('');
         }
 
-        function renderHistory(filter = 'all') {
-            const list = document.getElementById('history-list');
-            let checkins = [...appData.checkins].reverse();
-
-            if (filter !== 'all') {
-                checkins = checkins.filter(c => c.quarter === filter);
-            }
-
-            if (checkins.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
-                        <p>No check-ins ${filter !== 'all' ? 'for ' + filter : 'yet'}.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            list.innerHTML = checkins.map(c => `
-                <div class="checkin-item" onclick="viewCheckin(${c.id})">
-                    <div class="checkin-header">
-                        <span class="checkin-week">Week ${c.week} · ${new Date(c.date).toLocaleDateString()}</span>
-                        <span class="energy-badge ${c.energy}">${c.energy}</span>
-                    </div>
-                    <p class="checkin-win">${c.honestWin || 'No win recorded'}</p>
-                </div>
-            `).join('');
-        }
-
-        function filterHistory(filter, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderHistory(filter);
-        }
-
         function viewCheckin(id) {
             const checkin = appData.checkins.find(c => c.id === id);
             if (!checkin) return;
@@ -2136,11 +2151,12 @@
         }
 
         let currentCycleId = null;
+        let selectedCycleStatus = null;
 
         function openCycle(id) {
             currentCycleId = id;
             const cycle = depthCycles.find(c => c.id === id);
-            const saved = appData.cycles[id] || { responses: {} };
+            const saved = appData.cycles[id] || { responses: {}, status: 'Not Started' };
 
             document.getElementById('cycle-detail-title').textContent = `Cycle ${cycle.id}: ${cycle.title}`;
             document.getElementById('cycle-detail-quote').textContent = cycle.question;
@@ -2156,21 +2172,32 @@
                 </div>
             `).join('');
 
+            // Set cycle status
+            selectedCycleStatus = saved.status;
+            document.querySelectorAll('#screen-cycle-detail .energy-option').forEach(el => {
+                const statusText = el.textContent.trim();
+                el.classList.toggle('selected', statusText === saved.status);
+            });
+
             showScreen('cycle-detail');
+        }
+
+        function selectCycleStatus(status, el) {
+            selectedCycleStatus = status;
+            document.querySelectorAll('#screen-cycle-detail .energy-option').forEach(e => e.classList.remove('selected'));
+            el.classList.add('selected');
         }
 
         function saveCycleProgress() {
             const cycle = depthCycles.find(c => c.id === currentCycleId);
             const responses = {};
-            
+
             cycle.prompts.forEach((_, i) => {
                 responses[i] = document.getElementById(`prompt-${i}`).value;
             });
 
-            const hasContent = Object.values(responses).some(r => r.trim());
-            
             appData.cycles[currentCycleId] = {
-                status: hasContent ? 'In Progress' : 'Not Started',
+                status: selectedCycleStatus || 'Not Started',
                 responses,
                 lastUpdated: new Date().toISOString()
             };
@@ -2671,6 +2698,251 @@
             }
 
             return insights.join(' ');
+        }
+
+        // Search Check-ins
+        let currentSearchFilter = 'all';
+
+        function searchCheckins(query) {
+            renderHistory(currentSearchFilter, query);
+        }
+
+        function filterHistory(filter, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentSearchFilter = filter;
+            const searchQuery = document.getElementById('search-input')?.value || '';
+            renderHistory(filter, searchQuery);
+        }
+
+        function renderHistory(filter = 'all', searchQuery = '') {
+            const list = document.getElementById('history-list');
+            let checkins = [...appData.checkins].reverse();
+
+            if (filter !== 'all') {
+                checkins = checkins.filter(c => c.quarter === filter);
+            }
+
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase();
+                checkins = checkins.filter(c => {
+                    const searchableText = [
+                        c.truthSnapshot,
+                        c.honestWin,
+                        c.truthForward,
+                        c.renegotiationReflection,
+                        c.journalRef,
+                        ...(c.commitments || []).map(comm => comm.text)
+                    ].join(' ').toLowerCase();
+
+                    return searchableText.includes(query);
+                });
+            }
+
+            if (checkins.length === 0) {
+                list.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>No check-ins ${filter !== 'all' ? 'for ' + filter : 'found'}.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            list.innerHTML = checkins.map(c => `
+                <div class="checkin-item" onclick="viewCheckin(${c.id})">
+                    <div class="checkin-header">
+                        <span class="checkin-week">Week ${c.week} · ${new Date(c.date).toLocaleDateString()}</span>
+                        <span class="energy-badge ${c.energy}">${c.energy}</span>
+                    </div>
+                    <p class="checkin-win">${c.honestWin || 'No win recorded'}</p>
+                </div>
+            `).join('');
+        }
+
+        // Re-Entry Support & Quarter Transitions
+        function checkReentryAndQuarter() {
+            if (appData.checkins.length === 0) return;
+
+            const lastCheckin = appData.checkins[appData.checkins.length - 1];
+            const lastDate = new Date(lastCheckin.date);
+            const today = new Date();
+            const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+            // Re-entry notice
+            const reentryNotice = document.getElementById('reentry-notice');
+            if (daysSince >= 8) {
+                document.getElementById('days-since').textContent = daysSince;
+                reentryNotice.style.display = 'block';
+            } else {
+                reentryNotice.style.display = 'none';
+            }
+
+            // Quarter transition
+            const currentQuarter = getQuarter();
+            const lastQuarter = lastCheckin.quarter;
+
+            const quarterTransition = document.getElementById('quarter-transition');
+            const quarterNames = {
+                'Q1': 'You've entered Q1: Foundation',
+                'Q2': 'You've entered Q2: Stabilization',
+                'Q3': 'You've entered Q3: Expansion',
+                'Q4': 'You've entered Q4: Integration'
+            };
+            const quarterThemes = {
+                'Q1': 'Establish the system. Observe patterns. Secure stability.',
+                'Q2': 'Integrate new work. Refine what's working. Begin one Depth Cycle.',
+                'Q3': 'Add complexity only if capacity supports it.',
+                'Q4': 'Review what held. Prepare to close the year with honesty.'
+            };
+
+            if (currentQuarter !== lastQuarter && daysSince <= 7) {
+                document.getElementById('new-quarter-name').textContent = quarterNames[currentQuarter];
+                document.getElementById('quarter-theme').textContent = quarterThemes[currentQuarter];
+                quarterTransition.style.display = 'block';
+            } else {
+                quarterTransition.style.display = 'none';
+            }
+        }
+
+        // Markdown Export
+        function exportMarkdown() {
+            let markdown = '# Radical Honesty Year 2026\n\n';
+            markdown += `**Exported:** ${new Date().toLocaleDateString()}\n\n`;
+            markdown += `**Total Check-ins:** ${appData.checkins.length}/52\n\n`;
+            markdown += '---\n\n';
+
+            // Weekly Check-ins
+            markdown += '## Weekly Check-Ins\n\n';
+
+            appData.checkins.forEach(c => {
+                markdown += `### Week ${c.week} - ${new Date(c.date).toLocaleDateString()}\n\n`;
+                markdown += `**Energy:** ${c.energy}\n\n`;
+
+                if (c.lowEnergyMode) {
+                    markdown += '*Low Energy Mode*\n\n';
+                }
+
+                if (c.truthSnapshot) {
+                    markdown += `**Truth Snapshot:**\n${c.truthSnapshot}\n\n`;
+                }
+
+                if (c.commitments && c.commitments.length > 0) {
+                    markdown += `**Commitments:**\n`;
+                    c.commitments.forEach(comm => {
+                        const statusEmoji = comm.status === 'kept' ? '✓' : comm.status === 'renegotiated' ? '↻' : comm.status === 'dropped' ? '✗' : '○';
+                        markdown += `- ${statusEmoji} ${comm.text}\n`;
+                    });
+                    markdown += '\n';
+
+                    if (c.renegotiationReflection) {
+                        markdown += `**Renegotiation Reflection:**\n${c.renegotiationReflection}\n\n`;
+                    }
+                }
+
+                if (c.honestWin) {
+                    markdown += `**Honest Win:**\n${c.honestWin}\n\n`;
+                }
+
+                if (c.truthForward) {
+                    markdown += `**Truth to Carry Forward:**\n${c.truthForward}\n\n`;
+                }
+
+                if (c.journalRef) {
+                    markdown += `**Journal Reference:** ${c.journalRef}\n\n`;
+                }
+
+                markdown += '---\n\n';
+            });
+
+            // Depth Cycles
+            if (Object.keys(appData.cycles).length > 0) {
+                markdown += '## Depth Cycles\n\n';
+
+                Object.keys(appData.cycles).forEach(cycleId => {
+                    const cycleData = appData.cycles[cycleId];
+                    const cycle = depthCycles.find(c => c.id === parseInt(cycleId));
+
+                    if (cycle) {
+                        markdown += `### Cycle ${cycle.id}: ${cycle.title}\n\n`;
+                        markdown += `**Status:** ${cycleData.status}\n\n`;
+
+                        if (cycleData.responses && Object.keys(cycleData.responses).length > 0) {
+                            cycle.prompts.forEach((prompt, i) => {
+                                if (cycleData.responses[i] && cycleData.responses[i].trim()) {
+                                    markdown += `**${prompt}**\n\n`;
+                                    markdown += `${cycleData.responses[i]}\n\n`;
+                                }
+                            });
+                        }
+
+                        markdown += '---\n\n';
+                    }
+                });
+            }
+
+            // Quarterly Resets
+            if (Object.keys(appData.quarterlyResets).length > 0) {
+                markdown += '## Quarterly Resets\n\n';
+
+                ['Q1', 'Q2', 'Q3', 'Q4'].forEach(quarter => {
+                    const reset = appData.quarterlyResets[quarter];
+                    if (reset && Object.values(reset).some(v => v && v !== '')) {
+                        markdown += `### ${quarter}\n\n`;
+
+                        if (reset.pattern) {
+                            markdown += `**Unexpected Pattern:**\n${reset.pattern}\n\n`;
+                        }
+                        if (reset.avoided) {
+                            markdown += `**Consistently Avoided:**\n${reset.avoided}\n\n`;
+                        }
+                        if (reset.capacity) {
+                            markdown += `**Capacity Baseline:**\n${reset.capacity}\n\n`;
+                        }
+                        if (reset.shift) {
+                            markdown += `**Needed Shift:**\n${reset.shift}\n\n`;
+                        }
+
+                        markdown += '---\n\n';
+                    }
+                });
+            }
+
+            // Year-End Artifact
+            if (appData.yearEndArtifact && Object.keys(appData.yearEndArtifact).length > 0) {
+                const ye = appData.yearEndArtifact;
+                markdown += '## Year-End Artifact: If I Get Radically Honest\n\n';
+                markdown += '*December 31, 2026*\n\n';
+
+                if (ye.systems) {
+                    markdown += `**What systems held:**\n${ye.systems}\n\n`;
+                }
+                if (ye.identity) {
+                    markdown += `**What changed about how you see yourself:**\n${ye.identity}\n\n`;
+                }
+                if (ye.ableToSay) {
+                    markdown += `**What you're now able to say:**\n${ye.ableToSay}\n\n`;
+                }
+                if (ye.wants) {
+                    markdown += `**What you now know you want:**\n${ye.wants}\n\n`;
+                }
+                if (ye.leaving) {
+                    markdown += `**What you're leaving behind:**\n${ye.leaving}\n\n`;
+                }
+                if (ye.carrying) {
+                    markdown += `**What you're carrying forward:**\n${ye.carrying}\n\n`;
+                }
+            }
+
+            // Download
+            const blob = new Blob([markdown], { type: 'text/markdown' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `radical-honesty-2026-${new Date().toISOString().split('T')[0]}.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Readable export downloaded!');
         }
 
         // Service Worker Registration
