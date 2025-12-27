@@ -25,6 +25,7 @@
             --color-accent-light: #E9D5C3;
             --color-success: #7C9885;
             --color-warning: #D4A373;
+            --color-danger: #C97064;
             --color-survival: #C97064;
             --color-functional: #D4A373;
             --color-capable: #7C9885;
@@ -639,6 +640,34 @@
             cursor: not-allowed;
         }
 
+        .btn-secondary {
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-border);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b85450;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .button-group .submit-btn {
+            flex: 1;
+        }
+
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -999,6 +1028,86 @@
             color: var(--color-text-muted);
         }
 
+        /* Detail Actions */
+        .detail-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .detail-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .detail-btn.edit {
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+        }
+
+        .detail-btn.edit:hover {
+            background: var(--color-accent-light);
+        }
+
+        .detail-btn.delete {
+            background: #FEE2E2;
+            color: var(--color-danger);
+        }
+
+        .detail-btn.delete:hover {
+            background: #FECACA;
+        }
+
+        /* Confirm Dialog */
+        .confirm-dialog {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .confirm-dialog p {
+            margin-bottom: 24px;
+            color: var(--color-text);
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-buttons button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .confirm-buttons .cancel-btn {
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+        }
+
+        .confirm-buttons .confirm-btn {
+            background: var(--color-danger);
+            color: white;
+        }
+
         /* Toast */
         .toast {
             position: fixed;
@@ -1106,7 +1215,7 @@
                 </div>
 
                 <div class="action-cards">
-                    <div class="action-card primary" onclick="showScreen('checkin')">
+                    <div class="action-card primary" onclick="startNewCheckin()">
                         <div class="action-card-icon">✍️</div>
                         <div class="action-card-label">Weekly Check-In</div>
                     </div>
@@ -1132,7 +1241,7 @@
             <!-- Check-In Screen -->
             <section id="screen-checkin" class="screen">
                 <div class="form-header">
-                    <h1 class="form-title">Weekly Check-In</h1>
+                    <h1 class="form-title" id="checkin-form-title">Weekly Check-In</h1>
                     <p class="form-subtitle" id="checkin-week">Week 1</p>
                 </div>
 
@@ -1205,7 +1314,12 @@
                         <input type="text" class="form-input" id="journal-ref" placeholder="See journal, December 26...">
                     </div>
 
-                    <button type="submit" class="submit-btn">Save Check-In</button>
+                    <button type="submit" class="submit-btn" id="submit-checkin-btn">Save Check-In</button>
+                    
+                    <div class="button-group" id="edit-buttons" style="display: none;">
+                        <button type="button" class="submit-btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+                        <button type="submit" class="submit-btn">Update Check-In</button>
+                    </div>
                 </form>
             </section>
 
@@ -1335,7 +1449,7 @@
                     </svg>
                     <span>Home</span>
                 </button>
-                <button class="nav-item" onclick="showScreen('checkin')">
+                <button class="nav-item" onclick="startNewCheckin()">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
@@ -1384,6 +1498,9 @@
                 lowEnergyDefault: false
             }
         };
+
+        // Edit mode tracking
+        let editingCheckinId = null;
 
         const depthCycles = [
             {
@@ -1527,7 +1644,6 @@
             const weeks = appData.checkins.length;
             document.getElementById('weeks-progress').textContent = `${weeks}/52 weeks`;
             document.getElementById('progress-fill').style.width = `${(weeks / 52) * 100}%`;
-            document.getElementById('checkin-week').textContent = `Week ${weeks + 1}`;
         }
 
         function showScreen(screenId) {
@@ -1563,6 +1679,92 @@
                     addCommitment();
                 }
             });
+        }
+
+        function startNewCheckin() {
+            editingCheckinId = null;
+            resetForm();
+            document.getElementById('checkin-form-title').textContent = 'Weekly Check-In';
+            document.getElementById('checkin-week').textContent = `Week ${appData.checkins.length + 1}`;
+            document.getElementById('submit-checkin-btn').style.display = 'block';
+            document.getElementById('edit-buttons').style.display = 'none';
+            showScreen('checkin');
+        }
+
+        function editCheckin(id) {
+            const checkin = appData.checkins.find(c => c.id === id);
+            if (!checkin) return;
+
+            editingCheckinId = id;
+            
+            // Populate form with existing data
+            document.getElementById('truth-snapshot').value = checkin.truthSnapshot || '';
+            document.getElementById('renegotiation-reflection').value = checkin.renegotiationReflection || '';
+            document.getElementById('honest-win').value = checkin.honestWin || '';
+            document.getElementById('truth-forward').value = checkin.truthForward || '';
+            document.getElementById('journal-ref').value = checkin.journalRef || '';
+            
+            // Set energy
+            selectedEnergy = checkin.energy;
+            document.querySelectorAll('.energy-option').forEach(e => {
+                e.classList.toggle('selected', e.classList.contains(checkin.energy));
+            });
+            
+            // Set commitments
+            commitments = checkin.commitments ? [...checkin.commitments] : [];
+            renderCommitments();
+            
+            // Set low energy mode
+            if (checkin.lowEnergyMode !== lowEnergyMode) {
+                toggleLowEnergy();
+            }
+            
+            // Update UI
+            document.getElementById('checkin-form-title').textContent = 'Edit Check-In';
+            document.getElementById('checkin-week').textContent = `Week ${checkin.week}`;
+            document.getElementById('submit-checkin-btn').style.display = 'none';
+            document.getElementById('edit-buttons').style.display = 'flex';
+            
+            closeModal();
+            showScreen('checkin');
+        }
+
+        function cancelEdit() {
+            editingCheckinId = null;
+            resetForm();
+            showScreen('home');
+        }
+
+        function resetForm() {
+            document.getElementById('checkin-form').reset();
+            selectedEnergy = null;
+            commitments = [];
+            document.querySelectorAll('.energy-option').forEach(e => e.classList.remove('selected'));
+            renderCommitments();
+            if (lowEnergyMode) toggleLowEnergy();
+        }
+
+        function deleteCheckin(id) {
+            openModal('confirm-delete', { id });
+        }
+
+        function confirmDelete(id) {
+            const index = appData.checkins.findIndex(c => c.id === id);
+            if (index > -1) {
+                appData.checkins.splice(index, 1);
+                
+                // Renumber weeks
+                appData.checkins.forEach((c, i) => {
+                    c.week = i + 1;
+                });
+                
+                saveData();
+                updateProgress();
+                renderRecentCheckins();
+                closeModal();
+                showToast('Check-in deleted');
+                showScreen('home');
+            }
         }
 
         function toggleLowEnergy() {
@@ -1624,10 +1826,8 @@
                 return;
             }
 
-            const checkin = {
-                id: Date.now(),
+            const checkinData = {
                 date: new Date().toISOString(),
-                week: appData.checkins.length + 1,
                 quarter: getQuarter(),
                 lowEnergyMode,
                 energy: selectedEnergy,
@@ -1639,20 +1839,33 @@
                 journalRef: document.getElementById('journal-ref').value
             };
 
-            appData.checkins.push(checkin);
+            if (editingCheckinId) {
+                // Update existing
+                const index = appData.checkins.findIndex(c => c.id === editingCheckinId);
+                if (index > -1) {
+                    appData.checkins[index] = {
+                        ...appData.checkins[index],
+                        ...checkinData,
+                        updatedAt: new Date().toISOString()
+                    };
+                }
+                showToast('Check-in updated!');
+            } else {
+                // Create new
+                const checkin = {
+                    id: Date.now(),
+                    week: appData.checkins.length + 1,
+                    ...checkinData
+                };
+                appData.checkins.push(checkin);
+                showToast('Check-in saved!');
+            }
+
             saveData();
-
-            // Reset form
-            document.getElementById('checkin-form').reset();
-            selectedEnergy = null;
-            commitments = [];
-            document.querySelectorAll('.energy-option').forEach(e => e.classList.remove('selected'));
-            renderCommitments();
-            if (lowEnergyMode) toggleLowEnergy();
-
+            editingCheckinId = null;
+            resetForm();
             updateProgress();
             renderRecentCheckins();
-            showToast('Check-in saved!');
             showScreen('home');
         }
 
@@ -1923,6 +2136,34 @@
                             ${data.renegotiationReflection ? `<h3>Renegotiation Reflection</h3><p>${data.renegotiationReflection}</p>` : ''}
                             
                             ${data.journalRef ? `<p><strong>Journal:</strong> ${data.journalRef}</p>` : ''}
+                            
+                            <div class="detail-actions">
+                                <button class="detail-btn edit" onclick="editCheckin(${data.id})">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                    </svg>
+                                    Edit
+                                </button>
+                                <button class="detail-btn delete" onclick="deleteCheckin(${data.id})">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                    </svg>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'confirm-delete':
+                    title.textContent = 'Delete Check-In?';
+                    content.innerHTML = `
+                        <div class="confirm-dialog">
+                            <p>Are you sure you want to delete this check-in? This cannot be undone.</p>
+                            <div class="confirm-buttons">
+                                <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+                                <button class="confirm-btn" onclick="confirmDelete(${data.id})">Delete</button>
+                            </div>
                         </div>
                     `;
                     break;
