@@ -1189,9 +1189,17 @@
             <section id="screen-home" class="screen active">
                 <h1 class="greeting">Good <span id="time-greeting">afternoon</span>, Adrian</h1>
                 <p class="date-display" id="current-date">Friday, December 26, 2025</p>
+                <p id="last-checkin-display" style="font-size: 0.85rem; color: var(--color-text-muted); margin-top: -12px; margin-bottom: 16px;"></p>
 
                 <div class="core-question">
                     <p>What would December 31, 2026 look like if I get radically honest now?</p>
+                </div>
+
+                <!-- Export Reminder -->
+                <div id="export-reminder" style="display: none; background: #FEF3C7; padding: 16px; border-radius: var(--radius); margin-bottom: 16px; border-left: 3px solid #D97706;">
+                    <p style="margin-bottom: 8px; color: var(--color-text);"><strong>⚠️ Data Backup</strong></p>
+                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">Last export: <span id="days-since-export"></span> days ago</p>
+                    <button class="submit-btn btn-secondary" onclick="exportData()" style="padding: 10px 16px; font-size: 0.9rem;">Export Now</button>
                 </div>
 
                 <!-- Re-Entry Support -->
@@ -1225,6 +1233,9 @@
                         <div class="progress-bar">
                             <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
                         </div>
+                    </div>
+                    <div id="pattern-preview" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border); display: none;">
+                        <p style="font-size: 0.85rem; color: var(--color-text-muted); font-style: italic;" id="pattern-insight-text"></p>
                     </div>
                 </div>
 
@@ -1688,7 +1699,8 @@
             quarterlyResets: {},
             yearEndArtifact: {},
             settings: {
-                lowEnergyDefault: false
+                lowEnergyDefault: false,
+                lastExport: null
             }
         };
 
@@ -1804,7 +1816,7 @@
             renderRecentCheckins();
             renderCycles();
             setupForm();
-            checkReentryAndQuarter();
+            updateDashboard();
         });
 
         // Data Management
@@ -1816,6 +1828,8 @@
                 // Ensure new data structures exist (backward compatibility)
                 if (!appData.quarterlyResets) appData.quarterlyResets = {};
                 if (!appData.yearEndArtifact) appData.yearEndArtifact = {};
+                if (!appData.settings) appData.settings = { lowEnergyDefault: false, lastExport: null };
+                if (appData.settings.lastExport === undefined) appData.settings.lastExport = null;
             }
             updateProgress();
         }
@@ -1863,7 +1877,7 @@
             document.querySelectorAll('.nav-item')[navMap[screenId]]?.classList.add('active');
 
             // Screen-specific rendering
-            if (screenId === 'home') checkReentryAndQuarter();
+            if (screenId === 'home') updateDashboard();
             if (screenId === 'history') renderHistory();
             if (screenId === 'patterns') renderPatterns();
             if (screenId === 'yearend-artifact') loadYearEndArtifact();
@@ -2380,6 +2394,9 @@
 
         // Export
         function exportData() {
+            appData.settings.lastExport = new Date().toISOString();
+            saveData();
+
             const dataStr = JSON.stringify(appData, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -2389,6 +2406,7 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast('Data exported!');
+            checkExportReminder(); // Update banner
         }
 
         // Import
@@ -2935,6 +2953,9 @@
             }
 
             // Download
+            appData.settings.lastExport = new Date().toISOString();
+            saveData();
+
             const blob = new Blob([markdown], { type: 'text/markdown' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -2943,6 +2964,126 @@
             a.click();
             URL.revokeObjectURL(url);
             showToast('Readable export downloaded!');
+            checkExportReminder(); // Update banner
+        }
+
+        // Export Reminder
+        function checkExportReminder() {
+            if (!appData.settings.lastExport) {
+                // Never exported, don't show reminder yet (give them time to set up)
+                document.getElementById('export-reminder').style.display = 'none';
+                return;
+            }
+
+            const lastExport = new Date(appData.settings.lastExport);
+            const today = new Date();
+            const daysSince = Math.floor((today - lastExport) / (1000 * 60 * 60 * 24));
+
+            const reminder = document.getElementById('export-reminder');
+            if (daysSince >= 7) {
+                document.getElementById('days-since-export').textContent = daysSince;
+                reminder.style.display = 'block';
+            } else {
+                reminder.style.display = 'none';
+            }
+        }
+
+        // Last Check-in Display
+        function updateLastCheckinDisplay() {
+            const display = document.getElementById('last-checkin-display');
+
+            if (appData.checkins.length === 0) {
+                display.textContent = '';
+                return;
+            }
+
+            const lastCheckin = appData.checkins[appData.checkins.length - 1];
+            const lastDate = new Date(lastCheckin.date);
+            const today = new Date();
+            const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+            display.textContent = `Last check-in: Week ${lastCheckin.week} (${daysSince} ${daysSince === 1 ? 'day' : 'days'} ago)`;
+        }
+
+        // Pattern Preview
+        function updatePatternPreview() {
+            const preview = document.getElementById('pattern-preview');
+            const text = document.getElementById('pattern-insight-text');
+
+            if (appData.checkins.length < 3) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            const insight = getPatternInsight();
+            if (insight) {
+                text.textContent = insight;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        function getPatternInsight() {
+            // Get current quarter's check-ins
+            const currentQ = getQuarter();
+            const quarterCheckins = appData.checkins.filter(c => c.quarter === currentQ);
+
+            if (quarterCheckins.length === 0) return null;
+
+            // Calculate energy distribution for current quarter
+            const energyCounts = {
+                survival: 0,
+                functional: 0,
+                capable: 0,
+                expansive: 0
+            };
+
+            quarterCheckins.forEach(c => {
+                if (c.energy) energyCounts[c.energy]++;
+            });
+
+            const total = quarterCheckins.length;
+            const survivalPct = Math.round((energyCounts.survival / total) * 100);
+            const functionalPct = Math.round((energyCounts.functional / total) * 100);
+            const capablePct = Math.round((energyCounts.capable / total) * 100);
+            const expansivePct = Math.round((energyCounts.expansive / total) * 100);
+
+            // Determine most common energy
+            const maxEnergy = Object.entries(energyCounts).reduce((a, b) => a[1] > b[1] ? a : b);
+            const mostCommon = maxEnergy[0].charAt(0).toUpperCase() + maxEnergy[0].slice(1);
+
+            // Generate insights
+            const insights = [
+                `This quarter: ${survivalPct}% survival, ${functionalPct}% functional, ${capablePct}% capable, ${expansivePct}% expansive. Most common: ${mostCommon}.`,
+                `${total} check-ins this quarter. Your baseline is showing: ${mostCommon} mode.`,
+            ];
+
+            // Add commitment insight if applicable
+            const quarterCommitments = quarterCheckins.flatMap(c => c.commitments || []);
+            if (quarterCommitments.length > 0) {
+                const keptCount = quarterCommitments.filter(c => c.status === 'kept').length;
+                const renegCount = quarterCommitments.filter(c => c.status === 'renegotiated').length;
+                const keptPct = Math.round((keptCount / quarterCommitments.length) * 100);
+
+                if (keptPct > 70) {
+                    insights.push(`You're keeping ${keptPct}% of commitments this quarter. Strong follow-through.`);
+                } else if (renegCount > keptCount) {
+                    insights.push(`You renegotiate commitments frequently. This is capacity awareness in action.`);
+                }
+            }
+
+            // Rotate through insights based on week number
+            const week = appData.checkins.length;
+            return insights[week % insights.length];
+        }
+
+        // Dashboard Update (combines all checks)
+        function updateDashboard() {
+            checkExportReminder();
+            updateLastCheckinDisplay();
+            updatePatternPreview();
+            checkReentryAndQuarter();
         }
 
         // Service Worker Registration
