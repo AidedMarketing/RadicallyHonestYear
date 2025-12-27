@@ -1282,6 +1282,9 @@
                     <div class="form-section" id="section-truth">
                         <label class="form-label">1. Truth Snapshot</label>
                         <p class="form-helper">What's actually true about this week that I might otherwise gloss over?</p>
+                        <p class="form-helper" style="font-size: 0.8rem; margin-top: 4px; font-style: italic;">
+                            If you're stuck, consider: What am I not saying to anyone? What's harder than I'm admitting? What surprised me about my energy or capacity? What pattern am I noticing that I'd rather ignore?
+                        </p>
                         <textarea class="form-textarea" id="truth-snapshot" placeholder="The thing under the thing..."></textarea>
                     </div>
 
@@ -1339,6 +1342,13 @@
                         <input type="text" class="form-input" id="journal-ref" placeholder="See journal, December 26...">
                     </div>
 
+                    <div class="form-section" id="active-cycle-section" style="display: none;">
+                        <label class="form-label">Currently Working</label>
+                        <p class="form-helper" id="active-cycle-name" style="font-weight: 600; color: var(--color-accent);"></p>
+                        <p class="form-helper" style="font-size: 0.85rem; margin-top: -8px;">(Optional) How did this cycle show up in your week?</p>
+                        <textarea class="form-textarea" id="cycle-reflection" placeholder="Any connections to this cycle's work..." style="min-height: 60px;"></textarea>
+                    </div>
+
                     <button type="submit" class="submit-btn" id="submit-checkin-btn">Save Check-In</button>
                     
                     <div class="button-group" id="edit-buttons" style="display: none;">
@@ -1351,7 +1361,7 @@
             <!-- Depth Cycles Screen -->
             <section id="screen-cycles" class="screen">
                 <h1 class="form-title" style="margin-bottom: 8px;">Depth Cycles</h1>
-                <p class="cycles-intro">Seven doors. Open them when you're ready.</p>
+                <p class="cycles-intro">Nine doors into timeless inner work. Open them when you're ready.</p>
 
                 <div id="cycles-list">
                     <!-- Cycles rendered by JS -->
@@ -1469,6 +1479,12 @@
                 </div>
 
                 <form id="quarterly-reset-form" onsubmit="saveQuarterlyReset(event)">
+                    <div class="form-section" id="qr-continuity-section" style="display: none;">
+                        <label class="form-label">Looking back at last quarter</label>
+                        <p class="form-helper" id="qr-previous-shift" style="font-style: italic; color: var(--color-text-muted);"></p>
+                        <textarea class="form-textarea" id="qr-continuity" placeholder="Did it shift? What actually changed?" style="min-height: 80px;"></textarea>
+                    </div>
+
                     <div class="form-section">
                         <label class="form-label">What weekly pattern emerged that you didn't expect?</label>
                         <textarea class="form-textarea" id="qr-pattern" placeholder="What surprised you..." style="min-height: 100px;"></textarea>
@@ -1477,6 +1493,11 @@
                     <div class="form-section">
                         <label class="form-label">What did you consistently avoid?</label>
                         <textarea class="form-textarea" id="qr-avoided" placeholder="What you kept not doing..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What worked unexpectedly well this quarter?</label>
+                        <textarea class="form-textarea" id="qr-worked-well" placeholder="Positive surprises..." style="min-height: 100px;"></textarea>
                     </div>
 
                     <div class="form-section">
@@ -1533,6 +1554,22 @@
                     <div class="form-section">
                         <label class="form-label">What you're carrying forward?</label>
                         <textarea class="form-textarea" id="ye-carrying" placeholder="What you're taking into 2027..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What you learned about your capacity and baseline?</label>
+                        <textarea class="form-textarea" id="ye-capacity" placeholder="How your understanding of your energy shifted..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">What surprised you about your year?</label>
+                        <p class="form-helper">Positive or challenging—what didn't you expect?</p>
+                        <textarea class="form-textarea" id="ye-surprised" placeholder="What you didn't see coming..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <div class="form-section">
+                        <label class="form-label">If you could tell January 1, 2026 Adrian one thing, what would it be?</label>
+                        <textarea class="form-textarea" id="ye-message" placeholder="What you'd tell that person..." style="min-height: 100px;"></textarea>
                     </div>
 
                     <button type="submit" class="submit-btn">Save Year-End Artifact</button>
@@ -1710,76 +1747,20 @@
         const depthCycles = [
             {
                 id: 1,
-                title: "The Things You're Afraid to Want",
-                question: "What desires do you avoid admitting—ambitions, relationships, lifestyles?",
-                framing: "There are things you want that you've trained yourself not to say out loud. Some because they feel too big. Some because they feel selfish. Some because you tried once and were told no. This cycle is about naming them—not chasing them, just acknowledging they exist.",
+                title: "What You Consider \"Home\" Right Now",
+                question: "A place, a person, a habit, a smell, a routine. How has your definition changed?",
+                framing: "Home isn't always a location. It's whatever makes you feel like yourself. It might be a person, a ritual, a song, a time of day. As you change, what feels like home changes too. This cycle helps you identify what grounds you now—not what used to.",
                 prompts: [
-                    "What do I want that I've never said out loud to anyone?",
-                    "What do I dismiss as \"unrealistic\" before I even let myself want it?",
-                    "Whose voice tells me I can't have this? Where did that voice come from?",
-                    "If I knew no one would judge me, what would I admit I want?"
+                    "What feels like home right now? (Not where—what.)",
+                    "What used to feel like home but doesn't anymore?",
+                    "What am I still looking for that would make me feel more at home in my life?",
+                    "How can I create more of that feeling with what I have now?"
                 ],
-                safety: "Naming a want does not obligate you to pursue it. This is about seeing clearly, not acting immediately.",
+                safety: "This cycle can surface longing. That's okay. Longing is data.",
                 pacing: "2-3 weeks"
             },
             {
                 id: 2,
-                title: "Power Dynamics in Your Everyday Life",
-                question: "Where do you feel small, where do you feel powerful, and why?",
-                framing: "Power isn't just about authority. It's about where you shrink, where you expand, and why. Some rooms make you feel like you don't belong. Some relationships make you feel like you're always explaining yourself. This cycle maps those dynamics so you can see them clearly.",
-                prompts: [
-                    "Where do I consistently feel smaller than I am?",
-                    "Where do I feel most like myself—most powerful, most free?",
-                    "Who do I perform for? What version of me do they think they're getting?",
-                    "What would change if I stopped shrinking in those spaces?"
-                ],
-                safety: "You're mapping territory, not declaring war. Notice where you feel small without needing to fix it yet.",
-                pacing: "2-4 weeks"
-            },
-            {
-                id: 3,
-                title: "Your Personal Mythology",
-                question: "What stories do you tell about yourself—consciously or not?",
-                framing: "You have a story about who you are. It runs in the background of every decision, every relationship, every risk you take or avoid. Some of it is true. Some of it was true once but isn't anymore. Some of it was never true—just useful, or familiar, or given to you by someone else.",
-                prompts: [
-                    "What's the story I tell about myself most often?",
-                    "Where did this story come from? Did I write it, or did someone give it to me?",
-                    "What does this story protect me from?",
-                    "What would I be allowed to do or feel if I let go of this story?"
-                ],
-                safety: "You don't have to rewrite your mythology this year. Just see it clearly for the first time.",
-                pacing: "3-4 weeks"
-            },
-            {
-                id: 4,
-                title: "The Identity You're Slowly Growing Out Of",
-                question: "What habits, beliefs, or roles are slipping away—and what's replacing them?",
-                framing: "Growth doesn't always feel like becoming more. Sometimes it feels like losing who you were. There's a version of you that you're leaving behind—and you might not have grieved it yet. This cycle creates space to acknowledge what's ending.",
-                prompts: [
-                    "Who was I two years ago that I'm no longer?",
-                    "What habits or beliefs am I holding onto that don't serve who I'm becoming?",
-                    "What would I lose if I fully let go of that old identity?",
-                    "What's emerging in its place?"
-                ],
-                safety: "Grief is part of this. You're allowed to miss who you were while still choosing who you're becoming.",
-                pacing: "2-3 weeks"
-            },
-            {
-                id: 5,
-                title: "Emotional Echoes",
-                question: "Something that happened years ago but still influences how you react today.",
-                framing: "Your reactions don't always match the moment. Sometimes you respond to something that happened years ago, not what's in front of you now. This cycle helps you identify where the echoes are loudest—so you can respond to the present instead of the past.",
-                prompts: [
-                    "When do I react more strongly than the situation calls for?",
-                    "What old experience does this echo?",
-                    "What was I protecting myself from then? Is that still true now?",
-                    "How would I respond differently if I were only responding to now?"
-                ],
-                safety: "This cycle can surface difficult memories. Go at your own pace. Skip prompts that feel too heavy. Return when you're ready.",
-                pacing: "3-4 weeks minimum"
-            },
-            {
-                id: 6,
                 title: "Your Relationship With Rest",
                 question: "Do you allow yourself to rest without guilt? What does real rest look like?",
                 framing: "For people with fluctuating capacity, rest isn't optional—it's infrastructure. But most of us have complicated relationships with rest. We feel guilty. We call it laziness. We rest while working, which means we do neither well. This cycle examines what rest actually means for you.",
@@ -1793,18 +1774,102 @@
                 pacing: "2 weeks"
             },
             {
-                id: 7,
-                title: "What You Consider \"Home\" Right Now",
-                question: "A place, a person, a habit, a smell, a routine. How has your definition changed?",
-                framing: "Home isn't always a location. It's whatever makes you feel like yourself. It might be a person, a ritual, a song, a time of day. As you change, what feels like home changes too. This cycle helps you identify what grounds you now—not what used to.",
+                id: 3,
+                title: "The Things You're Afraid to Want",
+                question: "What desires do you avoid admitting—ambitions, relationships, lifestyles?",
+                framing: "There are things you want that you've trained yourself not to say out loud. Some because they feel too big. Some because they feel selfish. Some because you tried once and were told no. This cycle is about naming them—not chasing them, just acknowledging they exist.",
                 prompts: [
-                    "What feels like home right now? (Not where—what.)",
-                    "What used to feel like home but doesn't anymore?",
-                    "What am I still looking for that would make me feel more at home in my life?",
-                    "How can I create more of that feeling with what I have now?"
+                    "What do I want that I've never said out loud to anyone?",
+                    "What do I dismiss as \"unrealistic\" before I even let myself want it?",
+                    "Whose voice tells me I can't have this? Where did that voice come from?",
+                    "If I knew no one would judge me, what would I admit I want?"
                 ],
-                safety: "This cycle can surface longing. That's okay. Longing is data.",
+                safety: "Naming a want does not obligate you to pursue it. This is about seeing clearly, not acting immediately.",
                 pacing: "2-3 weeks"
+            },
+            {
+                id: 4,
+                title: "The Relationships That Hold You (And the Ones You Hold)",
+                question: "Where do you feel most seen? Where do you feel most alone?",
+                framing: "Your partner, your son, your family, your friendships—these relationships shape your capacity, your identity, your sense of home, and what you believe is possible. Some relationships give you energy. Some cost energy. Some are shifting as you change. Some need honesty you haven't given yet. This cycle examines what's working, what's changing, what you're holding back, and what you need that you're not asking for.",
+                prompts: [
+                    "Where do you feel most seen and most yourself? Which relationships let you breathe?",
+                    "What are you not saying in your most important relationships? What honesty are you holding back?",
+                    "What do you need from the people closest to you that you're not asking for?",
+                    "How have these relationships changed you this year? What's shifted in how you show up, what you offer, what you need?"
+                ],
+                safety: "You're not required to have \"the conversation\" just because you write something down. This is about seeing what's true first. Action can come later—or never.",
+                pacing: "3-4 weeks"
+            },
+            {
+                id: 5,
+                title: "What Lights You Up",
+                question: "What made you lean in this week—not because you should, but because you wanted to?",
+                framing: "Not everything has to be heavy. Not everything has to be about healing, capacity, or identity work. This cycle is about what draws you—what makes you curious, what brings you joy, what feels like play. It's permission to notice what lights up your mind or your mood without needing it to be productive, purposeful, or permanent. Delight is data too.",
+                prompts: [
+                    "What are you curious about right now? What have you been learning, reading, or exploring just because it interests you?",
+                    "What brought you genuine joy in the last month? (Small things count. Tiny things count.)",
+                    "What would you do more of if \"being productive\" wasn't a factor? What would you try if energy and time weren't constraints?",
+                    "What simple pleasure have you been denying yourself, and why?"
+                ],
+                safety: "Curiosity doesn't have to lead anywhere. Joy doesn't have to be constant. You're allowed to be interested in something without turning it into a project. You're allowed to enjoy something without maximizing it.",
+                pacing: "2 weeks"
+            },
+            {
+                id: 6,
+                title: "Power Dynamics in Your Everyday Life",
+                question: "Where do you feel small, where do you feel powerful, and why?",
+                framing: "Power isn't just about authority. It's about where you shrink, where you expand, and why. Some rooms make you feel like you don't belong. Some relationships make you feel like you're always explaining yourself. This cycle maps those dynamics so you can see them clearly.",
+                prompts: [
+                    "Where do I consistently feel smaller than I am?",
+                    "Where do I feel most like myself—most powerful, most free?",
+                    "Who do I perform for? What version of me do they think they're getting?",
+                    "What would change if I stopped shrinking in those spaces?"
+                ],
+                safety: "You're mapping territory, not declaring war. Notice where you feel small without needing to fix it yet.",
+                pacing: "2-4 weeks"
+            },
+            {
+                id: 7,
+                title: "Your Personal Mythology",
+                question: "What stories do you tell about yourself—consciously or not?",
+                framing: "You have a story about who you are. It runs in the background of every decision, every relationship, every risk you take or avoid. Some of it is true. Some of it was true once but isn't anymore. Some of it was never true—just useful, or familiar, or given to you by someone else.",
+                prompts: [
+                    "What's the story I tell about myself most often?",
+                    "Where did this story come from? Did I write it, or did someone give it to me?",
+                    "What does this story protect me from?",
+                    "What would I be allowed to do or feel if I let go of this story?"
+                ],
+                safety: "You don't have to rewrite your mythology this year. Just see it clearly for the first time.",
+                pacing: "3-4 weeks"
+            },
+            {
+                id: 8,
+                title: "The Identity You're Slowly Growing Out Of",
+                question: "What habits, beliefs, or roles are slipping away—and what's replacing them?",
+                framing: "Growth doesn't always feel like becoming more. Sometimes it feels like losing who you were. There's a version of you that you're leaving behind—and you might not have grieved it yet. This cycle creates space to acknowledge what's ending.",
+                prompts: [
+                    "Who was I two years ago that I'm no longer?",
+                    "What habits or beliefs am I holding onto that don't serve who I'm becoming?",
+                    "What would I lose if I fully let go of that old identity?",
+                    "What's emerging in its place?"
+                ],
+                safety: "Grief is part of this. You're allowed to miss who you were while still choosing who you're becoming.",
+                pacing: "2-3 weeks"
+            },
+            {
+                id: 9,
+                title: "Emotional Echoes",
+                question: "Something that happened years ago but still influences how you react today.",
+                framing: "Your reactions don't always match the moment. Sometimes you respond to something that happened years ago, not what's in front of you now. This cycle helps you identify where the echoes are loudest—so you can respond to the present instead of the past.",
+                prompts: [
+                    "When do I react more strongly than the situation calls for?",
+                    "What old experience does this echo?",
+                    "What was I protecting myself from then? Is that still true now?",
+                    "How would I respond differently if I were only responding to now?"
+                ],
+                safety: "This cycle can surface difficult memories. Go at your own pace. Skip prompts that feel too heavy. Return when you're ready.",
+                pacing: "3-4 weeks minimum"
             }
         ];
 
@@ -1894,6 +1959,9 @@
                 document.getElementById('ye-wants').value = saved.wants || '';
                 document.getElementById('ye-leaving').value = saved.leaving || '';
                 document.getElementById('ye-carrying').value = saved.carrying || '';
+                document.getElementById('ye-capacity').value = saved.capacity || '';
+                document.getElementById('ye-surprised').value = saved.surprised || '';
+                document.getElementById('ye-message').value = saved.message || '';
             }
         }
 
@@ -2478,11 +2546,35 @@
             document.querySelectorAll('#screen-quarterly-reset .energy-option').forEach(e => e.classList.remove('selected'));
             el.classList.add('selected');
 
+            // Show continuity section if there's a previous quarter
+            const quarterOrder = ['Q1', 'Q2', 'Q3', 'Q4'];
+            const currentIndex = quarterOrder.indexOf(quarter);
+            const continuitySection = document.getElementById('qr-continuity-section');
+
+            if (currentIndex > 0) {
+                const previousQuarter = quarterOrder[currentIndex - 1];
+                const previousReset = appData.quarterlyResets[previousQuarter];
+
+                if (previousReset && previousReset.shift) {
+                    continuitySection.style.display = 'block';
+                    document.getElementById('qr-previous-shift').textContent =
+                        `Last quarter (${previousQuarter}), you said this needed to shift: "${previousReset.shift}"`;
+                } else {
+                    continuitySection.style.display = 'none';
+                }
+            } else {
+                continuitySection.style.display = 'none';
+            }
+
             // Load existing data if present
             const saved = appData.quarterlyResets[quarter];
             if (saved) {
+                if (document.getElementById('qr-continuity')) {
+                    document.getElementById('qr-continuity').value = saved.continuity || '';
+                }
                 document.getElementById('qr-pattern').value = saved.pattern || '';
                 document.getElementById('qr-avoided').value = saved.avoided || '';
+                document.getElementById('qr-worked-well').value = saved.workedWell || '';
                 document.getElementById('qr-capacity').value = saved.capacity || '';
                 document.getElementById('qr-shift').value = saved.shift || '';
             } else {
@@ -2499,8 +2591,10 @@
             }
 
             appData.quarterlyResets[selectedQuarterReset] = {
+                continuity: document.getElementById('qr-continuity')?.value || '',
                 pattern: document.getElementById('qr-pattern').value,
                 avoided: document.getElementById('qr-avoided').value,
+                workedWell: document.getElementById('qr-worked-well').value,
                 capacity: document.getElementById('qr-capacity').value,
                 shift: document.getElementById('qr-shift').value,
                 savedAt: new Date().toISOString()
@@ -2521,6 +2615,9 @@
                 wants: document.getElementById('ye-wants').value,
                 leaving: document.getElementById('ye-leaving').value,
                 carrying: document.getElementById('ye-carrying').value,
+                capacity: document.getElementById('ye-capacity').value,
+                surprised: document.getElementById('ye-surprised').value,
+                message: document.getElementById('ye-message').value,
                 savedAt: new Date().toISOString()
             };
 
@@ -2908,11 +3005,17 @@
                     if (reset && Object.values(reset).some(v => v && v !== '')) {
                         markdown += `### ${quarter}\n\n`;
 
+                        if (reset.continuity) {
+                            markdown += `**Continuity from Previous Quarter:**\n${reset.continuity}\n\n`;
+                        }
                         if (reset.pattern) {
                             markdown += `**Unexpected Pattern:**\n${reset.pattern}\n\n`;
                         }
                         if (reset.avoided) {
                             markdown += `**Consistently Avoided:**\n${reset.avoided}\n\n`;
+                        }
+                        if (reset.workedWell) {
+                            markdown += `**Worked Unexpectedly Well:**\n${reset.workedWell}\n\n`;
                         }
                         if (reset.capacity) {
                             markdown += `**Capacity Baseline:**\n${reset.capacity}\n\n`;
@@ -2949,6 +3052,15 @@
                 }
                 if (ye.carrying) {
                     markdown += `**What you're carrying forward:**\n${ye.carrying}\n\n`;
+                }
+                if (ye.capacity) {
+                    markdown += `**What you learned about your capacity and baseline:**\n${ye.capacity}\n\n`;
+                }
+                if (ye.surprised) {
+                    markdown += `**What surprised you about your year:**\n${ye.surprised}\n\n`;
+                }
+                if (ye.message) {
+                    markdown += `**Message to January 1, 2026 Adrian:**\n${ye.message}\n\n`;
                 }
             }
 
