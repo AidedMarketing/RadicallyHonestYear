@@ -187,6 +187,144 @@
             z-index: 1;
         }
 
+        /* Week 1 Starter */
+        .starter-card {
+            background: var(--color-card);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            display: none;
+        }
+
+        .starter-title {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .starter-subtitle {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .starter-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .starter-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .starter-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--color-bg-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .starter-text {
+            flex: 1;
+            line-height: 1.4;
+            color: var(--color-text);
+        }
+
+        .starter-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 14px;
+            gap: 10px;
+        }
+
+        .starter-timing {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .starter-dismiss {
+            border: none;
+            background: var(--color-bg-warm);
+            color: var(--color-text);
+            padding: 8px 12px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .starter-dismiss:hover {
+            background: var(--color-accent-light);
+        }
+
+        /* Cadence Helper */
+        .nudge-card {
+            background: var(--color-card);
+            border-radius: var(--radius-lg);
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nudge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--color-bg-warm);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .nudge-content h3 {
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .nudge-content p {
+            font-size: 0.95rem;
+            color: var(--color-text-muted);
+            line-height: 1.4;
+        }
+
+        .nudge-btn {
+            margin-left: auto;
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            padding: 10px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .nudge-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
         /* Current Status Card */
         .status-card {
             background: var(--color-card);
@@ -1195,10 +1333,46 @@
                     <p>What would December 31, 2026 look like if I get radically honest now?</p>
                 </div>
 
+                <div class="starter-card" id="starter-card">
+                    <div class="starter-title">Week 1: Gentle Start</div>
+                    <p class="starter-subtitle">Use the first full week of 2026 to set anchors you can keep even on low-capacity days.</p>
+                    <ul class="starter-list">
+                        <li class="starter-item">
+                            <div class="starter-icon">📱</div>
+                            <div class="starter-text"><strong>Install & Pin:</strong> Add the PWA to your home screen and place it on your first page. Make it one tap away.</div>
+                        </li>
+                        <li class="starter-item">
+                            <div class="starter-icon">⏰</div>
+                            <div class="starter-text"><strong>Set a reminder:</strong> Create a weekly calendar or Reminders app alert for check-ins. Choose a day that matches your real rhythm.</div>
+                        </li>
+                        <li class="starter-item">
+                            <div class="starter-icon">✍️</div>
+                            <div class="starter-text"><strong>Do one check-in:</strong> Use low-energy mode if needed. Truth + Energy + Win is enough.</div>
+                        </li>
+                        <li class="starter-item">
+                            <div class="starter-icon">💾</div>
+                            <div class="starter-text"><strong>Export once:</strong> After the first check-in, export a JSON backup to Files. Repeat weekly or monthly.</div>
+                        </li>
+                    </ul>
+                    <div class="starter-actions">
+                        <span class="starter-timing" id="starter-timing">Week 1 focus</span>
+                        <button class="starter-dismiss" onclick="dismissStarterCard()">Mark complete</button>
+                    </div>
+                </div>
+
+                <div class="nudge-card" id="cadence-card" style="display: none;">
+                    <div class="nudge-icon">⏳</div>
+                    <div class="nudge-content">
+                        <h3 id="cadence-title">Check-in cadence</h3>
+                        <p id="cadence-body">Stay on rhythm with a weekly touch point.</p>
+                    </div>
+                    <button class="nudge-btn" onclick="startNewCheckin()" id="cadence-cta">Start check-in</button>
+                </div>
+
                 <!-- Export Reminder -->
                 <div id="export-reminder" style="display: none; background: #FEF3C7; padding: 16px; border-radius: var(--radius); margin-bottom: 16px; border-left: 3px solid #D97706;">
                     <p style="margin-bottom: 8px; color: var(--color-text);"><strong>⚠️ Data Backup</strong></p>
-                    <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;">Last export: <span id="days-since-export"></span> days ago</p>
+                    <p id="export-copy" style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 12px;"></p>
                     <button class="submit-btn btn-secondary" onclick="exportData()" style="padding: 10px 16px; font-size: 0.9rem;">Export Now</button>
                 </div>
 
@@ -1915,6 +2089,48 @@
         function updateDate() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+        }
+
+        function checkStarterCard() {
+            const card = document.getElementById('starter-card');
+            if (!card) return;
+
+            const dismissed = localStorage.getItem('starterCardDismissed') === 'true';
+            if (dismissed) {
+                card.style.display = 'none';
+                return;
+            }
+
+            const now = new Date();
+            const firstWeekStart = new Date('2026-01-05T00:00:00');
+            const firstWeekEnd = new Date('2026-01-11T23:59:59');
+            const hasCheckins = appData.checkins.length > 0;
+
+            if (now > firstWeekEnd && hasCheckins) {
+                card.style.display = 'none';
+                return;
+            }
+
+            const timing = document.getElementById('starter-timing');
+            if (timing) {
+                if (now < firstWeekStart) {
+                    const days = Math.ceil((firstWeekStart - now) / (1000 * 60 * 60 * 24));
+                    timing.textContent = `Starts in ${days} day${days === 1 ? '' : 's'}`;
+                } else if (now <= firstWeekEnd) {
+                    const daysLeft = Math.max(1, Math.ceil((firstWeekEnd - now) / (1000 * 60 * 60 * 24)));
+                    timing.textContent = `${daysLeft} day${daysLeft === 1 ? '' : 's'} left in Week 1`;
+                } else {
+                    timing.textContent = 'Use anytime you need a reset';
+                }
+            }
+
+            card.style.display = 'block';
+        }
+
+        function dismissStarterCard() {
+            localStorage.setItem('starterCardDismissed', 'true');
+            const card = document.getElementById('starter-card');
+            if (card) card.style.display = 'none';
         }
 
         function updateProgress() {
@@ -3122,9 +3338,17 @@
 
         // Export Reminder
         function checkExportReminder() {
+            const reminder = document.getElementById('export-reminder');
+            const copy = document.getElementById('export-copy');
+
             if (!appData.settings.lastExport) {
-                // Never exported, don't show reminder yet (give them time to set up)
-                document.getElementById('export-reminder').style.display = 'none';
+                // If they've started but never exported, nudge once
+                if (appData.checkins.length > 0) {
+                    copy.textContent = 'No exports yet — create a backup now.';
+                    reminder.style.display = 'block';
+                } else {
+                    reminder.style.display = 'none';
+                }
                 return;
             }
 
@@ -3132,9 +3356,8 @@
             const today = new Date();
             const daysSince = Math.floor((today - lastExport) / (1000 * 60 * 60 * 24));
 
-            const reminder = document.getElementById('export-reminder');
             if (daysSince >= 7) {
-                document.getElementById('days-since-export').textContent = daysSince;
+                copy.textContent = `Last export: ${daysSince} day${daysSince === 1 ? '' : 's'} ago.`;
                 reminder.style.display = 'block';
             } else {
                 reminder.style.display = 'none';
@@ -3156,6 +3379,42 @@
             const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
 
             display.textContent = `Last check-in: Week ${lastCheckin.week} (${daysSince} ${daysSince === 1 ? 'day' : 'days'} ago)`;
+        }
+
+        function updateCadenceCard() {
+            const card = document.getElementById('cadence-card');
+            if (!card) return;
+
+            const title = document.getElementById('cadence-title');
+            const body = document.getElementById('cadence-body');
+            const cta = document.getElementById('cadence-cta');
+
+            if (appData.checkins.length === 0) {
+                title.textContent = 'Set your cadence';
+                body.textContent = 'Choose a weekly day now so your first check-in is easy. Low-energy mode still counts.';
+                cta.textContent = 'Start first check-in';
+                card.style.display = 'flex';
+                return;
+            }
+
+            const lastCheckin = appData.checkins[appData.checkins.length - 1];
+            const lastDate = new Date(lastCheckin.date);
+            const today = new Date();
+            const daysSince = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+            const nextWeekNumber = appData.checkins.length + 1;
+
+            if (daysSince >= 7) {
+                title.textContent = 'Check-in due';
+                body.textContent = `It's been ${daysSince} days since Week ${lastCheckin.week}. Capture Week ${nextWeekNumber} to keep the rhythm.`;
+                cta.textContent = `Start Week ${nextWeekNumber}`;
+            } else {
+                const daysUntil = Math.max(1, 7 - daysSince);
+                title.textContent = 'Stay on rhythm';
+                body.textContent = `Next check-in lands in about ${daysUntil} day${daysUntil === 1 ? '' : 's'}. Jot notes now so it takes 5 minutes later.`;
+                cta.textContent = 'Add notes early';
+            }
+
+            card.style.display = 'flex';
         }
 
         // Pattern Preview
@@ -3234,9 +3493,11 @@
         // Dashboard Update (combines all checks)
         function updateDashboard() {
             checkExportReminder();
+            updateCadenceCard();
             updateLastCheckinDisplay();
             updatePatternPreview();
             checkReentryAndQuarter();
+            checkStarterCard();
         }
 
         // Service Worker Registration
